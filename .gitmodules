@@ -1,0 +1,3 @@
+[submodule "hw1_submdl/hw1/smhasher"]
+	path = hw1_submdl/hw1/smhasher
+	url = https://github.com/aappleby/smhasher.git

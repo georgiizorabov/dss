@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.21)
+project(hw1)
+
+set(CMAKE_CXX_STANDARD 17)
+#add_executable(hw1 main.cpp)
+add_executable(hw1 smhasher/src/main.cpp)
+include_directories(smhasher/src)
