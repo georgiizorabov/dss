@@ -8,9 +8,5 @@ void XXHash_test(const void *key, int len, uint32_t seed, [[maybe_unused]] void 
 }
 
 void memCpy1(const void *key, int len, MH_UINT32 seed, void *out) {
-//    char* src = new char[len];
-//    char* dst = new char[len];
-//    memcpy(dst, src, len);
-//    delete[] src;
-//    delete[] dst;
+    memcpy(dst, src, len);
 }
