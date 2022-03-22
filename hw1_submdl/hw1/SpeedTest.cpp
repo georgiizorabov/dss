@@ -237,7 +237,7 @@ void TinySpeedTest ( pfHash hash, int hashsize, int keysize, uint32_t seed, bool
   
   double cycles = SpeedTest(hash,seed,trials,keysize,0);
 
-  printf("%8.2f\n",cycles / hashsize);
+  printf("%8.2f\n",cycles / keysize);
 
 }
 
