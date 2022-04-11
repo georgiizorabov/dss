@@ -1,0 +1,10 @@
+/snap/clion/184/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/184/bin/ninja/linux/ninja -G Ninja /home/georgii/shdAlgo/hw2
+CMake Error at CMakeLists.txt:7 (add_executable):
+  add_executable cannot create target "hw2" because another target with the
+  same name already exists.  The existing target is an executable created in
+  source directory "/home/georgii/shdAlgo/hw2".  See documentation for policy
+  CMP0002 for more details.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/georgii/shdAlgo/hw2/cmake-build-debug/CMakeFiles/CMakeOutput.log".

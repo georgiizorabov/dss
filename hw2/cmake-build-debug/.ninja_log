@@ -1,0 +1,4 @@
+# ninja log v5
+0	47	1649345118266539838	CMakeFiles/hw2.dir/zstd/examples/simple_compression.c.o	724e0ced88d7ed6d
+1	297	1649345012205364237	CMakeFiles/hw2.dir/main.cpp.o	d0d4a0162b41c413
+302	365	1649238760664633452	hw2	1d9766f2bd5b81da

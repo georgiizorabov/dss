@@ -1,0 +1,3 @@
+/home/georgii/shdAlgo/hw2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/georgii/shdAlgo/hw2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/georgii/shdAlgo/hw2/cmake-build-debug/CMakeFiles/hw2.dir
