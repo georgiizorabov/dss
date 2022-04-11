@@ -54,7 +54,7 @@ static int compress_file(FILE *f_in, FILE *f_out) {
         free(buf);
         return 1;
     }
-    int64_t time = 0;
+    int64_t time = 0; 
     while (1) {
         len = fread(buf, 1, CHUNK_SIZE, f_in);
 
@@ -67,8 +67,10 @@ static int compress_file(FILE *f_in, FILE *f_out) {
         if (len == 0) {
             break;
         }
+        int64_t begin = _rdtsc();
         ret = LZ4F_write(lz4fWrite, buf, len);
-
+        int64_t end = _rdtsc();
+        time += end - begin;
         if (LZ4F_isError(ret)) {
             printf("LZ4F_write: %s\n", LZ4F_getErrorName(ret));
             goto out;
@@ -81,6 +83,7 @@ static int compress_file(FILE *f_in, FILE *f_out) {
         printf("LZ4F_writeClose: %s\n", LZ4F_getErrorName(ret));
         return 1;
     }
+    printf("lasted: %li\n", time);
     return 0;
 }
 
