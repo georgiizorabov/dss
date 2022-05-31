@@ -51,8 +51,8 @@ class KeyOffset{
     Key key;
     int offet;
 
-    Key getKey() const;
-
     int getOffset() const;
 
+public:
+    Key getKey() const;
 };
