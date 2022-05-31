@@ -50,7 +50,7 @@ void to_json(json &j, const std::vector<KeyValue> &kv);
 class KeyOffset{
     Key key;
     int offet;
-
+public:
     Key getKey() const;
 
     int getOffset() const;
