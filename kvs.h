@@ -46,3 +46,13 @@ class KeyValueStore {
 void to_json(json &j, const KeyValue &kv);
 
 void to_json(json &j, const std::vector<KeyValue> &kv);
+
+class KeyOffset{
+    Key key;
+    int offet;
+
+    Key getKey() const;
+
+    int getOffset() const;
+
+};

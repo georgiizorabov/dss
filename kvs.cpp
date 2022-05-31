@@ -56,3 +56,11 @@ void to_json(json &j, const std::vector<KeyValue> &kv) {
     }
 
 }
+
+Key KeyOffset::getKey() const{
+    return key;
+}
+
+int KeyOffset::getOffset() const{
+    return offet;
+}
