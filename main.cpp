@@ -6,6 +6,9 @@
 using json = nlohmann::json;
 
 int main() {
+
+//    fileHandler::fileName = "output.json";
+
     auto kv1 = KeyValue("k1", 1, "v1", 1);
     auto kv2 = KeyValue("k2", 1, "v2", 1);
     auto kv3 = KeyValue("k3", 1, "v3", 1);

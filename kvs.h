@@ -1,6 +1,9 @@
 #pragma once
 
 #include <optional>
+#include "json.h"
+#include "fileHandler.h"
+
 using json = nlohmann::json;
 
 class Key {
@@ -39,7 +42,8 @@ public:
 class KeyValueStore {
     void add(const KeyValue &);
 
-    std::optional<KeyValue> get(const Key &); // Желательно добавить сюда const в конец (по возможности)
+    std::optional<KeyValue> get(const Key &);
+
     void del(const Key &);
 };
 
@@ -47,12 +51,14 @@ void to_json(json &j, const KeyValue &kv);
 
 void to_json(json &j, const std::vector<KeyValue> &kv);
 
-class KeyOffset{
+class KeyOffset {
     Key key;
     int offet;
 
+public:
     Key getKey() const;
 
     int getOffset() const;
-
 };
+
+void to_json(json &j, const KeyOffset &ko);

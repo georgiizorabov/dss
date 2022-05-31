@@ -2,8 +2,11 @@
 #ifndef SHDPROJ_SSTABLE_H
 #define SHDPROJ_SSTABLE_H
 
+#include <vector>
+#include "kvs.h"
+
 class SSTable {
-    void addLog();
+    void addLog(const std::vector<KeyOffset>& toAdd);
 
     void find();
 
