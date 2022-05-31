@@ -7,29 +7,23 @@
 
 #include "Log.h"
 
-class Log {
-    std::vector<KeyOffset> log;
+bool Log::find(Key key) {
+    return std::any_of(log.begin(), log.end(), [key](KeyOffset keyOffset) {return keyOffset.getKey().getKey() == key.getKey();});
+}
 
-    public:
-        void add(KeyOffset keyOffset) {
-            log.push_back(keyOffset);
+void Log::remove(Key key) {
+    for (auto i = log.begin(); i != log.end(); i++) {
+        if (i->getKey().getKey() == key.getKey()) {
+            log.erase(i);
+            return;
         }
+    }
+}
 
-        bool find(Key key) {
-            return std::any_of(log.begin(), log.end(), [key](KeyOffset keyOffset) {return keyOffset.getKey().getKey() == key.getKey();});
-        }
+void Log::clear() {
+    log.clear();
+}
 
-        void remove(Key key) {
-            for (auto i = log.begin(); i != log.end(); i++) {
-                if (i->getKey().getKey() == key.getKey()) {
-                    log.erase(i);
-                    return;
-                }
-            }
-        }
-
-        void clear() {
-            log.clear();
-        }
-
-};
+void Log::add(KeyOffset keyOffset) {
+    log.push_back(keyOffset);
+}
