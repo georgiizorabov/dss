@@ -1,10 +1,6 @@
-//
-// Created by Fedya on 31.05.2022.
-//
 #include <vector>
 #include <algorithm>
 #include "kvs.h"
-
 #include "Log.h"
 
 bool Log::find(Key key) {
@@ -26,4 +22,8 @@ void Log::clear() {
 
 void Log::add(KeyOffset keyOffset) {
     log.push_back(keyOffset);
+}
+
+std::vector<KeyOffset> Log::getLog() {
+    return log;
 }

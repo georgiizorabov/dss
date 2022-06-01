@@ -3,4 +3,4 @@ project(shdProj)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(shdProj main.cpp kvs.cpp SSTable.cpp Log.cpp)
+add_executable(shdProj main.cpp kvs.cpp SSTable.cpp Log.cpp fileHandler.cpp Filter.cpp SparseSSTable.cpp)

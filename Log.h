@@ -1,9 +1,6 @@
 #pragma once
-#include "kvs.h"
-#include "SStable.h"
-
 class Log {
-    std::vector<KeyOffset> log;
+    std::vector<KeyOffset> log = {};
 
 public:
     void add(KeyOffset keyOffset);
@@ -13,4 +10,6 @@ public:
     void remove(Key key);
 
     void clear();
+
+    std::vector<KeyOffset> getLog();
 };
