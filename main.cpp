@@ -22,6 +22,5 @@ int main() {
     SSTable ssTable;
     ssTable.addLog(log.getLog());
 
-
     return 0;
 }
