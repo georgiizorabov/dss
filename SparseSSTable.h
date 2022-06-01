@@ -26,8 +26,8 @@ class SparseSSTable {
     void recount() {
 
     }
-    поля:
-            array <pair<key, offset>>
+//    поля:
+//            array <pair<key, offset>>
 
 };
 

@@ -4,7 +4,7 @@
 #include <iostream>
 #include "kvs.h"
 
-class Filter {
+struct Filter {
     bloom_parameters parameters;
     bloom_filter filter;
 
@@ -12,11 +12,12 @@ class Filter {
 
     void addElement(const Key &k);
 
-    bool isPresent(const Key &k);
+    bool isPresent(const Key &k) const;
 
     void removeElement();
 
     void clear();
 
+    Filter();
 };
 
