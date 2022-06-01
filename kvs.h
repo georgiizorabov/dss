@@ -1,6 +1,9 @@
 #pragma once
 
 #include <optional>
+#include "fileHandler.h"
+//#include "SStable.h"
+
 using json = nlohmann::json;
 
 class Key {
@@ -50,9 +53,10 @@ void to_json(json &j, const std::vector<KeyValue> &kv);
 class KeyOffset{
     Key key;
     int offet;
-
-    int getOffset() const;
-
 public:
+    int getOffset() const;
     Key getKey() const;
+
+    KeyOffset(Key key, int i);
 };
+void to_json(json &j, const KeyOffset &ko);

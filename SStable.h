@@ -1,11 +1,8 @@
-
-#ifndef SHDPROJ_SSTABLE_H
-#define SHDPROJ_SSTABLE_H
-
+#pragma once
 #include <vector>
 #include "kvs.h"
 
-class SSTable {
+struct SSTable {
     void addLog(const std::vector<KeyOffset>& toAdd);
 
     void find();
@@ -17,4 +14,3 @@ class SSTable {
 //    sparseSSTable sparseSSTable;
 };
 
-#endif //SHDPROJ_SSTABLE_H

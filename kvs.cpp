@@ -65,6 +65,8 @@ int KeyOffset::getOffset() const {
     return offet;
 }
 
+KeyOffset::KeyOffset(Key key, int i) : key(key), offet(i) {}
+
 void to_json(json &j, const KeyOffset &ko) {
 
     j = json{
