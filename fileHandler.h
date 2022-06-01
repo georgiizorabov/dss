@@ -6,7 +6,9 @@
 using json = nlohmann::json;
 
 struct fileHandler{
-//    static std::string fileName;
-    static void writeToFile(const json &j);
-    static json readFromFile();
+
+    std::string fileName;
+    fileHandler(std::string);
+    void writeToFile(const json &j);
+    json readFromFile();
 };

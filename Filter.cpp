@@ -1,4 +1,3 @@
-#pragma once
 
 #include "bloom_filter.hpp"
 #include <iostream>

@@ -12,3 +12,7 @@ json fileHandler::readFromFile() {
     auto jf = json::parse<>(ifs);
     return jf;
 }
+
+fileHandler::fileHandler(std::string s) {
+    fileName = s;
+}
