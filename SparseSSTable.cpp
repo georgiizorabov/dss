@@ -3,7 +3,6 @@
 std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::getBounds(Key key) {
     std::optional<KeyOffset> start;
     std::optional<KeyOffset> end;
-
     for (int i = 0; i < sparse.size(); ++i) {
         if (strcmp(sparse[i].getKey().getKey(), key.getKey()) <= 0)
             start = sparse[i];
@@ -12,9 +11,7 @@ std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::get
             break;
         }
     }
-
     return {start, end};
-
 }
 
 void SparseSSTable::recount(fileHandler file) {
