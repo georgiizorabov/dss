@@ -61,3 +61,5 @@ public:
     KeyOffset(Key key, int i);
 };
 void to_json(json &j, const KeyOffset &ko);
+void from_json(const json& j, KeyOffset& keyOffset);
+void from_json(const json& j, std::vector<KeyOffset> &vec);
