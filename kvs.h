@@ -1,5 +1,5 @@
 #pragma once
-
+#include "gtest/gtest.h"
 #include <optional>
 #include "fileHandler.h"
 //#include "SStable.h"
@@ -40,7 +40,7 @@ public:
 };
 
 
-class KeyValueStore {
+class KeyValueStore : public ::testing::Test {
     void add(const KeyValue &);
 
     std::optional<KeyValue> get(const Key &); // Желательно добавить сюда const в конец (по возможности)
