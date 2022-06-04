@@ -57,6 +57,18 @@ void to_json(json &j, const std::vector<KeyValue> &kv) {
 
 }
 
+void from_json(const json& j, KeyOffset& keyOffset) {
+    std::string key;
+    std::string offset;
+    j.at("key").get_to(key);
+    j.at("offset").get_to(offset);
+    keyOffset = KeyOffset(Key(key.c_str(), 64), atoi(offset.c_str()));
+}
+
+
+void from_json(const json& j, std::vector<KeyOffset> &vec) {
+
+}
 
 
 Key KeyOffset::getKey() const {
@@ -75,5 +87,13 @@ void to_json(json &j, const KeyOffset &ko) {
             {"key",    ko.getKey().getKey()},
             {"offset", ko.getOffset()}
     };
+
+}
+
+void to_json(json &j, const std::vector<KeyOffset> &kv) {
+
+    for (auto rec: kv) {
+        j.push_back(rec);
+    }
 
 }
