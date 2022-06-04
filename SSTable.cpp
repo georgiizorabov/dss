@@ -8,13 +8,14 @@ using json = nlohmann::json;
 void SSTable::addLog(const std::vector<KeyOffset> &vec) {
     json j;
     Filter filter;
+
     for(const KeyOffset& ko : vec){
         j.push_back(ko);
     }
     for(const auto &el : vec){
         filter.addElement(el.getKey());
     }
-    fileHandler::writeToFile(j);
+    file.writeToFile(j);
 //    filter.addElement;
 //    sparseSSTable.recount
 //    fileHandler.add

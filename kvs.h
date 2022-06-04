@@ -39,6 +39,7 @@ public:
     Value getValue() const;
 };
 
+
 class KeyValueStore {
     void add(const KeyValue &);
 

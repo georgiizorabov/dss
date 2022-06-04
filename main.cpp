@@ -19,7 +19,7 @@ int main() {
     log.add(ko2);
     log.add(ko3);
 
-    SSTable ssTable;
+    SSTable ssTable(fileHandler("output.txt"));
     ssTable.addLog(log.getLog());
 
     return 0;
