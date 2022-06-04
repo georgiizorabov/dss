@@ -67,7 +67,11 @@ void from_json(const json& j, KeyOffset& keyOffset) {
 
 
 void from_json(const json& j, std::vector<KeyOffset> &vec) {
-
+    for (const json& i : j) {
+        KeyOffset keyOffset;
+        from_json(i, keyOffset);
+        vec.push_back(keyOffset);
+    }
 }
 
 
@@ -76,10 +80,12 @@ Key KeyOffset::getKey() const {
 }
 
 int KeyOffset::getOffset() const {
-    return offet;
+    return offset;
 }
 
-KeyOffset::KeyOffset(Key key, int i) : key(key), offet(i) {}
+KeyOffset::KeyOffset(Key key, int i) : key(key), offset(i) {}
+
+KeyOffset::KeyOffset() : key(Key("1", 1)), offset(1) {}
 
 void to_json(json &j, const KeyOffset &ko) {
 

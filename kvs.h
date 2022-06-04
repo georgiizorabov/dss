@@ -52,11 +52,12 @@ void to_json(json &j, const std::vector<KeyValue> &kv);
 
 class KeyOffset{
     Key key;
-    int offet;
+    int offset;
 public:
     int getOffset() const;
     Key getKey() const;
 
+    KeyOffset();
     KeyOffset(Key key, int i);
 };
 void to_json(json &j, const KeyOffset &ko);
