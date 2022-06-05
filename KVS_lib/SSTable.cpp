@@ -23,7 +23,7 @@ std::optional<KeyValue> SSTable::find(const Key &key) {
     if (!filter.isPresent(key)) {
         return std::nullopt;
     }
-    auto data = file.readFromFile(); //TODO sparse
+    auto data = file.readFromFile(0/*offset*/); //TODO sparse
     std::vector<KeyValue> v;
     from_json(data, v);
     for (const auto &el: v) {

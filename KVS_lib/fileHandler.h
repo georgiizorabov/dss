@@ -10,7 +10,7 @@ struct sstableFileHandler{
     std::string fileName;
     sstableFileHandler(std::string);
     void writeToFile(const json &j);
-    json readFromFile();
+    json readFromFile(long offset);
 };
 
 struct dataFileHandler{

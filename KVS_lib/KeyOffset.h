@@ -65,6 +65,6 @@ void from_json(const json &j, KeyOffset &keyOffset);
 
 void from_json(const json &j, std::vector<KeyOffset> &vec);
 
-KeyValue from_json(const json &j);
+void from_json(const json &j, KeyValue &kv);
 
 void from_json(const json &j, std::vector<KeyValue> &vec);

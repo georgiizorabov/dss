@@ -16,7 +16,7 @@ std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::get
 
 void SparseSSTable::recount(sstableFileHandler file) {
     sparse.clear();
-    json js = file.readFromFile();
+    json js = file.readFromFile(/*offset*/ 0);
     size_t size = js.size();
     auto v = js.get<std::vector<KeyOffset>>();
     for (int i = 0; i < js.size(); i += 100) {
