@@ -3,6 +3,14 @@ project(shdProj)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(shdProj main.cpp kvs.cpp SSTable.cpp Log.cpp fileHandler.cpp Filter.cpp SparseSSTable.cpp)
+
+set(SOURCE_FILES main.cpp)
+add_executable(run ${SOURCE_FILES})
+
+include_directories(KVS)
+add_subdirectory(KVS)
+
+target_link_libraries(run KVS)
+
 add_subdirectory(Google_tests)
-target_link_libraries(${PROJECT_TEST_NAME} gtest)
+

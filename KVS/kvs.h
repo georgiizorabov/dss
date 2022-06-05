@@ -40,7 +40,7 @@ public:
 };
 
 
-class KeyValueStore : public ::testing::Test {
+class KeyValueStore {
     void add(const KeyValue &);
 
     std::optional<KeyValue> get(const Key &); // Желательно добавить сюда const в конец (по возможности)
