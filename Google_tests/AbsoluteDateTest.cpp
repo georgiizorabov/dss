@@ -35,8 +35,12 @@ TEST(AbsoluteDateTestSuite, simple_test) { // 12/2/2020 -> 737761
 }
 
 TEST(AbsoluteDateTestSuite, tesettest) { // 12/2/2020 -> 737761
-    auto e = "{\"key\":\"k1\",\"value\":\"v1\"}";
-    std::cout << json::parse(e)["key"];
+    auto e = R"({"key":"k1","value":"v1"})";
+    auto jf = json::parse<>(e);
+    KeyValue kv = KeyValue(nullptr, 0, nullptr, 0);
+    from_json(jf, kv);
+
+    std::cout << kv.getValue().getValue() << jf.dump(); //why.........
 
 //    EXPECT_EQ(kvs.get(key1).value().getValue().getValue(), value1.getValue());
 }
