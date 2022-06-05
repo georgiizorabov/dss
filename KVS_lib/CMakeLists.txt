@@ -7,7 +7,7 @@ set(HEADER_FILES
         kvs.h
         Log.h
         SparseSSTable.h
-        SSTable.h
+        SStable.h
         )
 
 set(SOURCE_FILES

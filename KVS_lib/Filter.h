@@ -2,7 +2,8 @@
 
 #include "bloom_filter.hpp"
 #include <iostream>
-#include "kvs.h"
+#include "KeyOffset.h"
+//#include "kvs.h"
 
 struct Filter {
     bloom_parameters parameters;

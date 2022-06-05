@@ -14,7 +14,7 @@ std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::get
     return {start, end};
 }
 
-void SparseSSTable::recount(fileHandler file) {
+void SparseSSTable::recount(sstableFileHandler file) {
     sparse.clear();
     json js = file.readFromFile();
     size_t size = js.size();

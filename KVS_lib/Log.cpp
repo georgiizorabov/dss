@@ -3,8 +3,14 @@
 #include "kvs.h"
 #include "Log.h"
 
-bool Log::find(Key key) {
-    return std::any_of(log.begin(), log.end(), [key](KeyOffset keyOffset) {return keyOffset.getKey().getKey() == key.getKey();});
+std::optional<KeyOffset> Log::find(Key key) {
+//    return std::any_of(log.begin(), log.end(), [key](KeyOffset keyOffset) {return keyOffset.getKey().getKey() == key.getKey();});
+    for (const auto &el: log) {
+        if (el.getKey().getKey() == key.getKey()) {
+            return (KeyOffset(el.getKey(), el.getOffset()));
+        }
+    }
+    return std::nullopt;
 }
 
 void Log::remove(Key key) {

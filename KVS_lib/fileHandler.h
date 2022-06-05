@@ -1,14 +1,23 @@
 #pragma once
 
 #include "json.h"
-//#include "kvs.h"
+#include "KeyOffset.h"
 
 using json = nlohmann::json;
 
-struct fileHandler{
+struct sstableFileHandler{
 
     std::string fileName;
-    fileHandler(std::string);
+    sstableFileHandler(std::string);
     void writeToFile(const json &j);
     json readFromFile();
 };
+
+struct dataFileHandler{
+
+    std::string fileName;
+    dataFileHandler(std::string);
+    void writeToFile(const json &j);
+    KeyValue readFromFile(long offset);
+};
+

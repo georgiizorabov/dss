@@ -1,19 +1,20 @@
 #pragma once
 #include <utility>
 #include <vector>
-#include "kvs.h"
+#include "KeyOffset.h"
+#include "Filter.h"
+#include "SparseSSTable.h"
 
 struct SSTable {
-    fileHandler file;
-    SSTable(fileHandler file_) : file(std::move(file_)){}
+    sstableFileHandler file;
+    SSTable(sstableFileHandler file_) : file(std::move(file_)){}
     void addLog(const std::vector<KeyOffset>& toAdd);
 
-    void find();
+    std::optional<KeyValue> find(const Key & key);
 
     void removeElement();
 
-//    SSTableFabric fabric;
-//    filter filter;
-//    sparseSSTable sparseSSTable;
+    Filter filter;
+    SparseSSTable sparseSSTable;
 };
 

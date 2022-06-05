@@ -5,7 +5,7 @@ class Log {
 public:
     void add(KeyOffset keyOffset);
 
-    bool find(Key key);
+    std::optional<KeyOffset> find(Key key);
 
     void remove(Key key);
 

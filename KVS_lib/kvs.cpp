@@ -57,7 +57,24 @@ void to_json(json &j, const std::vector<KeyValue> &kv) {
 
 }
 
-void from_json(const json& j, KeyOffset& keyOffset) {
+KeyValue from_json(const json &j) {
+    std::string key;
+    std::string value;
+    j.at("key").get_to(key);
+    j.at("value").get_to(value);
+    KeyValue keyValue = KeyValue(Key(key.c_str(), 64), Value(value.c_str(), 64));
+    return keyValue;
+}
+
+
+void from_json(const json &j, std::vector<KeyValue> &vec) {
+    for (const json &i: j) {
+        vec.push_back(from_json(i));
+    }
+}
+
+
+void from_json(const json &j, KeyOffset &keyOffset) {
     std::string key;
     std::string offset;
     j.at("key").get_to(key);
@@ -66,8 +83,8 @@ void from_json(const json& j, KeyOffset& keyOffset) {
 }
 
 
-void from_json(const json& j, std::vector<KeyOffset> &vec) {
-    for (const json& i : j) {
+void from_json(const json &j, std::vector<KeyOffset> &vec) {
+    for (const json &i: j) {
         KeyOffset keyOffset;
         from_json(i, keyOffset);
         vec.push_back(keyOffset);
@@ -79,7 +96,7 @@ Key KeyOffset::getKey() const {
     return key;
 }
 
-int KeyOffset::getOffset() const {
+long KeyOffset::getOffset() const {
     return offset;
 }
 
@@ -104,6 +121,19 @@ void to_json(json &j, const std::vector<KeyOffset> &kv) {
 
 }
 
-void KeyValueStore::add(const KeyValue &) {
-
+void KeyValueStore::add(const KeyValue &kv) {
+    file.writeToFile(kv);
+    log.add(KeyOffset(kv.getKey(), 0));//TODO change
 }
+
+KeyValueStore::KeyValueStore() : ssTable(SSTable(sstableFileHandler("outputSStable.json"))), file("outputData.json") {}
+
+std::optional<KeyValue> KeyValueStore::get(const Key &key) {
+    auto inLog = log.find(key);
+    if (inLog.has_value()) {
+        return file.readFromFile(inLog->getOffset());
+    }
+    return ssTable.find(key).value();
+}
+
+KeyValue::KeyValue(const Key key, const Value value) : key(key), value(value) {}
