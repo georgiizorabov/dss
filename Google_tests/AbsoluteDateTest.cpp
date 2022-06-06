@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
 #include "KVS.h"
-//#include "KeyOffset.h"
-#include <cassert>
 #include <fstream>
 
 void SetUpTest() {
@@ -11,13 +9,21 @@ void SetUpTest() {
     ofs2 << "";
 }
 
-TEST(AbsoluteDateTestSuite, ExampleDate) { // 12/2/2020 -> 737761
-    KeyValueStore kvs;
-    auto ko1 = KeyValue("k1", 1, "v1", 1);
-    auto ko2 = KeyValue("k1", 1, "v1", 1);
-    auto ko3 = KeyValue("k1", 1, "v1", 1);
-    auto ko4 = KeyValue("k1", 1, "v1", 1);
+class KVS_tester : public ::testing::Test {
+public:
+    KeyValue ko1, ko2, ko3, ko4;
+protected:
+    virtual void SetUp() {
+         ko1 = KeyValue("k1", 1, "v1", 1);
+         ko2 = KeyValue("k1", 1, "v1", 1);
+         ko3 = KeyValue("k1", 1, "v1", 1);
+         ko4 = KeyValue("k1", 1, "v1", 1);
+    }
+};
 
+
+TEST_F(KVS_tester, ExampleDate) {
+    KeyValueStore kvs;
     kvs.add(ko1);
     kvs.add(ko2);
     kvs.add(ko3);
