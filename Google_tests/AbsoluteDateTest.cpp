@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "kvs.h"
+#include "KVS.h"
 //#include "KeyOffset.h"
 #include <cassert>
 #include <fstream>

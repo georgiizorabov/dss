@@ -1,8 +1,9 @@
 #include <iostream>
 #include "json.h"
-#include "kvs.h"
+#include "KVS.h"
 #include "SStable.h"
 #include "Log.h"
+#include "FileHandler.h"
 
 using json = nlohmann::json;
 
@@ -19,7 +20,7 @@ int main() {
     log.add(ko2);
     log.add(ko3);
 
-    SSTable ssTable(fileHandler("output.txt"));
+    SSTable ssTable(SSTableFileHandler("output.txt"));
     ssTable.addLog(log.getLog());
 
     return 0;

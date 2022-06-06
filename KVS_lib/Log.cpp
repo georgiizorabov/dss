@@ -1,6 +1,6 @@
 #include <vector>
 #include <algorithm>
-#include "kvs.h"
+#include "KVS.h"
 #include "Log.h"
 
 std::optional<KeyOffset> Log::find(const Key& key) {

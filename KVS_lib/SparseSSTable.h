@@ -4,7 +4,7 @@
 #include <utility>
 #include <optional>
 #include "KeyOffset.h"
-#include "fileHandler.h"
+#include "FileHandler.h"
 //#include "SStable.h"
 
 class SparseSSTable {
@@ -15,6 +15,6 @@ class SparseSSTable {
 //            array <pair<key, offset>>
 
 public:
-    void recount(sstableFileHandler f);
+    void recount(SSTableFileHandler f);
 };
 

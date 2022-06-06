@@ -1,7 +1,7 @@
 #include "SStable.h"
 #include "json.h"
 //#include "kvs.h"
-#include "fileHandler.h"
+#include "FileHandler.h"
 #include "Filter.h"
 
 using json = nlohmann::json;

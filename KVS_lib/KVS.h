@@ -1,7 +1,7 @@
 #pragma once
 
 #include <optional>
-#include "fileHandler.h"
+#include "FileHandler.h"
 #include "SStable.h"
 #include "KeyOffset.h"
 #include "Log.h"
@@ -18,7 +18,7 @@ public:
 
     Log log;
     SSTable ssTable;
-    dataFileHandler file;
+    DataFileHandler file;
 
 //    KeyValueStore(){
 //

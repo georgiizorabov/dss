@@ -1,7 +1,7 @@
 #include <fstream>
 #include <utility>
 #include "json.h"
-#include "kvs.h"
+#include "KVS.h"
 
 using json = nlohmann::json;
 
@@ -131,7 +131,7 @@ void KeyValueStore::add(const KeyValue &kv) {
     }
 }
 
-KeyValueStore::KeyValueStore() : ssTable(SSTable(sstableFileHandler("outputSStable.json"))), file("outputData.json") {}
+KeyValueStore::KeyValueStore() : ssTable(SSTable(SSTableFileHandler("outputSStable.json"))), file("outputData.json") {}
 
 std::optional<KeyValue> KeyValueStore::get(const Key &key) {
     auto inLog = log.find(key);

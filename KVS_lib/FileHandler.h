@@ -5,19 +5,19 @@
 
 using json = nlohmann::json;
 
-struct sstableFileHandler{
+struct SSTableFileHandler{
 
     std::string fileName;
-    sstableFileHandler(std::string);
+    SSTableFileHandler(std::string);
     void writeToFile(const json &j);
     json readFromFile(long offset);
     json readFromFileAll();
 };
 
-struct dataFileHandler{
+struct DataFileHandler{
 
     std::string fileName;
-    dataFileHandler(std::string);
+    DataFileHandler(std::string);
     void writeToFile(const json &j);
     KeyValue readFromFile(long offset);
 };

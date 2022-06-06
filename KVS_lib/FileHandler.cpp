@@ -1,17 +1,17 @@
-#include "fileHandler.h"
+#include "FileHandler.h"
 #include <iostream>
 #include <fstream>
 #include <utility>
 #include "KeyOffset.h"
 
-void sstableFileHandler::writeToFile(const json &j) {
+void SSTableFileHandler::writeToFile(const json &j) {
     std::ofstream ofs(fileName, std::ios_base::app);
     for (const auto &el: j) {
         ofs << el << std::endl;
     }
 }
 
-json sstableFileHandler::readFromFile(long offset) {
+json SSTableFileHandler::readFromFile(long offset) {
     std::ifstream ifs(fileName);
     for (int i = 0; i < offset; ++i) {
         ifs.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -19,17 +19,17 @@ json sstableFileHandler::readFromFile(long offset) {
     std::string value;
     std::getline(ifs, value);
     auto jf = json::parse<>(value);
-    KeyOffset ko = KeyOffset(Key("nullptr", 0), 0); // TODO change
+    KeyOffset ko = KeyOffset(Key("nullptr", 0), 0); // FTODO change
     from_json(jf, ko);
 
     return ko;
 }
 
-sstableFileHandler::sstableFileHandler(std::string s) {
+SSTableFileHandler::SSTableFileHandler(std::string s) {
     fileName = std::move(s);
 }
 
-json sstableFileHandler::readFromFileAll() {
+json SSTableFileHandler::readFromFileAll() {
     std::ifstream ifs(fileName);
     std::string value;
     json j;
@@ -40,12 +40,12 @@ json sstableFileHandler::readFromFileAll() {
 }
 
 
-void dataFileHandler::writeToFile(const json &j) {
+void DataFileHandler::writeToFile(const json &j) {
     std::ofstream ofs(fileName, std::ios_base::app);
     ofs << j << std::endl;
 }
 
-KeyValue dataFileHandler::readFromFile(long offset) {
+KeyValue DataFileHandler::readFromFile(long offset) {
     std::ifstream ifs(fileName);
     for (int i = 0; i < offset; ++i) {
         ifs.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -59,6 +59,6 @@ KeyValue dataFileHandler::readFromFile(long offset) {
     return kv;
 }
 
-dataFileHandler::dataFileHandler(std::string s) {
+DataFileHandler::DataFileHandler(std::string s) {
     fileName = std::move(s);
 }
