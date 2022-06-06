@@ -29,12 +29,11 @@ Filter::Filter(const std::vector<Key> &vec) {
 }
 
 void Filter::addElement(const Key &k) {
-    filter.insert(k);
+    filter.insert(k.getKey());
 }
 
 bool Filter::isPresent(const Key &k) const {
-    std::cout << filter.contains(k) << ' ' << k.getKey();
-    return filter.contains(k);
+    return filter.contains(k.getKey());
 }
 
 void Filter::removeElement() {

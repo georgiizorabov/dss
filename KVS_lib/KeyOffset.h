@@ -8,34 +8,34 @@
 using json = nlohmann::json;
 
 class Key {
-    const char *key;
+    std::string key;
     size_t size;
 public:
-    Key(const char *value, size_t size);
+    Key(std::string value, size_t size);
 
-    const char *getKey() const;
+    std::string getKey() const;
 
     size_t getSize() const;
 };
 
 struct Value {
-    const char *value;
+    std::string value;
     size_t size;
 public:
-    Value(const char *value, size_t size);
+    Value(std::string value, size_t size);
 
-    const char *getValue() const;
+    std::string getValue() const;
 
     size_t getSize() const;
 };
 
-class KeyValue {
+struct KeyValue {
     Key key;
     Value value;
 public:
-    KeyValue(const char *key, size_t key_size, const char *value, size_t value_size);
+    KeyValue(std::string key, size_t key_size, std::string value, size_t value_size);
 
-    KeyValue(Key key, Value value);
+    KeyValue(Key  key, Value  value);
 
     Key getKey() const;
 
@@ -48,7 +48,7 @@ void to_json(json &j, const std::vector<KeyValue> &kv);
 
 class KeyOffset {
     Key key;
-    int offset;
+    long offset;
 public:
     long getOffset() const;
 
@@ -56,7 +56,7 @@ public:
 
     KeyOffset();
 
-    KeyOffset(Key key, int i);
+    KeyOffset(Key key, long i);
 };
 
 void to_json(json &j, const KeyOffset &ko);

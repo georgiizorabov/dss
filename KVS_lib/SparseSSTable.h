@@ -10,7 +10,7 @@
 class SparseSSTable {
     char const *ch = "";
     std::vector<KeyOffset> sparse = {};
-    std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> getBounds(Key key);
+    std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> getBounds(const Key& key);
     //    поля:
 //            array <pair<key, offset>>
 

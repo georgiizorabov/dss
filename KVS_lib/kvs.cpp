@@ -1,16 +1,17 @@
 #include <fstream>
+#include <utility>
 #include "json.h"
 #include "kvs.h"
 
 using json = nlohmann::json;
 
-Key::Key(const char *value, size_t size) :
-        key(value),
+Key::Key(std::string value, size_t size) :
+        key(std::move(value)),
         size(size) {
 
 }
 
-const char *Key::getKey() const {
+std::string Key::getKey() const {
     return key;
 }
 
@@ -18,11 +19,11 @@ size_t Key::getSize() const {
     return size;
 }
 
-Value::Value(const char *value, size_t size) :
-        value(value), size(size) {
+Value::Value(std::string value, size_t size) :
+        value(std::move(value)), size(size) {
 }
 
-const char *Value::getValue() const {
+std::string Value::getValue() const {
     return value;
 }
 
@@ -30,8 +31,8 @@ size_t Value::getSize() const {
     return size;
 }
 
-KeyValue::KeyValue(const char *key, size_t key_size, const char *value, size_t value_size) :
-        key(Key(key, key_size)), value(Value(value, value_size)) {
+KeyValue::KeyValue(std::string key, size_t key_size, std::string value, size_t value_size) :
+        key(Key(std::move(key), key_size)), value(Value(std::move(value), value_size)) {
 }
 
 Value KeyValue::getValue() const {
@@ -51,33 +52,24 @@ void to_json(json &j, const KeyValue &kv) {
 
 void to_json(json &j, const std::vector<KeyValue> &kv) {
 
-    for (auto rec: kv) {
+    for (const auto& rec: kv) {
         j.push_back(rec);
     }
 
 }
 
-//KeyValue from_json(const json &j) {
-//    std::string key;
-//    std::string value;
-//    j.at("key").get_to(key);
-//    j.at("value").get_to(value);
-//    KeyValue keyValue = KeyValue(Key(key.c_str(), 64), Value(value.c_str(), 64));
-//
-//    return keyValue;
-//}
-void from_json(const json &j, KeyValue &kv){
+void from_json(const json &j, KeyValue &kv) {
     std::string key;
     std::string value;
     j.at("key").get_to(key);
     j.at("value").get_to(value);
-    kv = KeyValue(Key(key.c_str(), 64), Value(value.c_str(), 64));
+    kv = KeyValue(Key(key, 1), Value(value, 1));
 }
 
 
 void from_json(const json &j, std::vector<KeyValue> &vec) {
     for (const json &i: j) {
-        KeyValue kv = KeyValue(nullptr, 0, nullptr, 0);
+        KeyValue kv = KeyValue("nullptr", 0, "nullptr", 0);
         from_json(i, kv);
         vec.push_back(kv);
     }
@@ -89,7 +81,7 @@ void from_json(const json &j, KeyOffset &keyOffset) {
     std::string offset;
     j.at("key").get_to(key);
     j.at("offset").get_to(offset);
-    keyOffset = KeyOffset(Key(key.c_str(), 64), atoi(offset.c_str()));
+    keyOffset = KeyOffset(Key(key, 64), atoi(offset.c_str()));
 }
 
 
@@ -110,7 +102,7 @@ long KeyOffset::getOffset() const {
     return offset;
 }
 
-KeyOffset::KeyOffset(Key key, int i) : key(key), offset(i) {}
+KeyOffset::KeyOffset(Key key, long i) : key(std::move(key)), offset(i) {}
 
 KeyOffset::KeyOffset() : key(Key("1", 1)), offset(1) {}
 
@@ -118,14 +110,14 @@ void to_json(json &j, const KeyOffset &ko) {
 
     j = json{
             {"key",    ko.getKey().getKey()},
-            {"offset", ko.getOffset()}
+            {"offset", std::to_string(ko.getOffset())}
     };
 
 }
 
 void to_json(json &j, const std::vector<KeyOffset> &kv) {
 
-    for (auto rec: kv) {
+    for (const auto& rec: kv) {
         j.push_back(rec);
     }
 
@@ -133,7 +125,10 @@ void to_json(json &j, const std::vector<KeyOffset> &kv) {
 
 void KeyValueStore::add(const KeyValue &kv) {
     file.writeToFile(kv);
-    log.add(KeyOffset(kv.getKey(), log.getLog().size()));
+    if(log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size()))){
+        ssTable.addLog(log.getLog());
+        log.clear();
+    }
 }
 
 KeyValueStore::KeyValueStore() : ssTable(SSTable(sstableFileHandler("outputSStable.json"))), file("outputData.json") {}
@@ -143,7 +138,11 @@ std::optional<KeyValue> KeyValueStore::get(const Key &key) {
     if (inLog.has_value()) {
         return file.readFromFile(inLog->getOffset());
     }
-    return ssTable.find(key);
+    auto offset = ssTable.find(key);
+    if(offset.has_value()) {
+        return file.readFromFile(offset.value());
+    }
+    return std::nullopt;
 }
 
-KeyValue::KeyValue(const Key key, const Value value) : key(key), value(value) {}
+KeyValue::KeyValue(Key  key, Value  value) : key(std::move(key)), value(std::move(value)) {}

@@ -11,6 +11,7 @@ struct sstableFileHandler{
     sstableFileHandler(std::string);
     void writeToFile(const json &j);
     json readFromFile(long offset);
+    json readFromFileAll();
 };
 
 struct dataFileHandler{

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <utility>
 #include <vector>
 #include "KeyOffset.h"
@@ -7,10 +8,14 @@
 
 struct SSTable {
     sstableFileHandler file;
-    SSTable(sstableFileHandler file_) : file(std::move(file_)){}
-    void addLog(const std::vector<KeyOffset>& toAdd);
 
-    std::optional<KeyValue> find(const Key & key);
+    SSTable(sstableFileHandler file_) : file(std::move(file_)) {}
+
+    void addLog(const std::vector<KeyOffset> &toAdd);
+
+    long size = 0;
+
+    std::optional<long> find(const Key &key);
 
     void removeElement();
 

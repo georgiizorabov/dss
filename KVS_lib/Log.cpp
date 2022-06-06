@@ -3,8 +3,7 @@
 #include "kvs.h"
 #include "Log.h"
 
-std::optional<KeyOffset> Log::find(Key key) {
-//    return std::any_of(log.begin(), log.end(), [key](KeyOffset keyOffset) {return keyOffset.getKey().getKey() == key.getKey();});
+std::optional<KeyOffset> Log::find(const Key& key) {
     for (const auto &el: log) {
         if (el.getKey().getKey() == key.getKey()) {
             return (KeyOffset(el.getKey(), el.getOffset()));
@@ -13,7 +12,7 @@ std::optional<KeyOffset> Log::find(Key key) {
     return std::nullopt;
 }
 
-void Log::remove(Key key) {
+void Log::remove(const Key& key) {
     for (auto i = log.begin(); i != log.end(); i++) {
         if (i->getKey().getKey() == key.getKey()) {
             log.erase(i);
@@ -26,8 +25,12 @@ void Log::clear() {
     log.clear();
 }
 
-void Log::add(KeyOffset keyOffset) {
+bool Log::add(const KeyOffset& keyOffset) {
     log.push_back(keyOffset);
+    if(log.size() >= 10){//TODO: log fullness criteria
+        return true;
+    }
+    return false;
 }
 
 std::vector<KeyOffset> Log::getLog() {
