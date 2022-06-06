@@ -9,6 +9,7 @@ void SSTableFileHandler::writeToFile(const json &j) {
     for (const auto &el: j) {
         ofs << el << std::endl;
     }
+    number_of_lines++;
 }
 
 json SSTableFileHandler::readFromFile(long offset) {
@@ -25,8 +26,14 @@ json SSTableFileHandler::readFromFile(long offset) {
     return ko;
 }
 
-SSTableFileHandler::SSTableFileHandler(std::string s) {
+SSTableFileHandler::SSTableFileHandler(std::string s) : number_of_lines(0) {
     fileName = std::move(s);
+    std::string line;
+    std::ifstream file(fileName);
+
+    while (std::getline(file, line))
+        ++number_of_lines;
+    file.close();
 }
 
 json SSTableFileHandler::readFromFileAll() {

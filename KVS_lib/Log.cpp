@@ -26,13 +26,16 @@ void Log::clear() {
 }
 
 bool Log::add(const KeyOffset& keyOffset) {
+    if (is_full())
+        return false;
     log.push_back(keyOffset);
-    if(log.size() >= 10){//TODO: log fullness criteria
-        return true;
-    }
-    return false;
+    return true;
 }
 
 std::vector<KeyOffset> Log::getLog() {
     return log;
+}
+
+bool Log::is_full() {
+    return log.size() == size;
 }

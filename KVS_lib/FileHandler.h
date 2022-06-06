@@ -6,6 +6,7 @@
 using json = nlohmann::json;
 
 struct SSTableFileHandler{
+    size_t number_of_lines;
 
     std::string fileName;
     SSTableFileHandler(std::string);
