@@ -26,7 +26,7 @@ json SSTableFileHandler::readFromFile(long offset) {
     std::string value;
     std::getline(ifs, value);
     auto jf = json::parse<>(value);
-    KeyOffset ko = KeyOffset(Key("nullptr", 0), 0); // FTODO change
+    KeyOffset ko = KeyOffset(Key("boobooboo", 0), 0); // FTODO change
     from_json(jf, ko);
 
     return ko;

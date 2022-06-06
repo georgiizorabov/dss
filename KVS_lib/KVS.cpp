@@ -131,7 +131,7 @@ void KeyValueStore::add(const KeyValue &kv) {
     }
 }
 
-KeyValueStore::KeyValueStore() : ssTable(SSTable(SSTableFileHandler("outputSStable.json"))), file("outputData.json"), log(1) {}
+KeyValueStore::KeyValueStore() : ssTable(SSTable(SSTableFileHandler("outputSStable.json"), SparseSSTable("outputSStable.json"))), file("outputData.json"), log(1) {}
 
 std::optional<KeyValue> KeyValueStore::get(const Key &key) {
     auto inLog = log.find(key);

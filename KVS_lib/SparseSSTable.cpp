@@ -8,7 +8,7 @@ std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::get
     for (auto & i : sparse) {
         if (strcmp(i.getKey().getKey().c_str(), key.getKey().c_str()) <= 0)
             start = i;
-        if (strcmp(i.getKey().getKey().c_str(), key.getKey().c_str()) >= 0) {
+        if (strcmp(i.getKey().getKey().c_str(), key.getKey().c_str()) > 0) {
             end = i;
             break;
         }

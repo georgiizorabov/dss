@@ -14,6 +14,7 @@ class SparseSSTable {
 //            array <pair<key, offset>>
 
 public:
+    explicit SparseSSTable(std::string s) : file(s) {}
     void recount();
     std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> getBounds(const Key& key);
 
