@@ -28,7 +28,7 @@ std::optional<long> SSTable::find(const Key &key) {
     }
     auto bounds = sparseSSTable.getBounds(key);
     if (bounds.first.has_value()) {
-        long long end_search = file.number_of_lines;
+        long long end_search = SSTableFileHandler::number_of_lines;
         if (bounds.second.has_value())
             end_search = bounds.second->getOffset();
         for (auto i = bounds.first->getOffset(); i < end_search; i++) {

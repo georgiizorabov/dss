@@ -16,7 +16,7 @@ std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::get
 
 void SparseSSTable::recount() {
     sparse.clear();
-    size_t size = file.number_of_lines;
+    size_t size = SSTableFileHandler::number_of_lines;
     for (int i = 0; i < size; i += 100) {
         sparse.push_back(file.readFromFile(i));
     }

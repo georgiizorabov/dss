@@ -32,11 +32,11 @@ json SSTableFileHandler::readFromFile(long offset) {
     return ko;
 }
 
-SSTableFileHandler::SSTableFileHandler(std::string s) : number_of_lines(0) {
+SSTableFileHandler::SSTableFileHandler(std::string s){
     fileName = std::move(s);
     std::string line;
     std::ifstream file(fileName);
-
+    number_of_lines = 0;
     while (std::getline(file, line))
         ++number_of_lines;
     file.close();
