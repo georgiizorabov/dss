@@ -1,5 +1,7 @@
 #include "SparseSSTable.h"
 
+size_t SSTableFileHandler::number_of_lines = 0;
+
 std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::getBounds(const Key& key) {
     std::optional<KeyOffset> start;
     std::optional<KeyOffset> end;
