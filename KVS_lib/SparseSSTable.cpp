@@ -14,13 +14,11 @@ std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::get
     return {start, end};
 }
 
-void SparseSSTable::recount(SSTableFileHandler file) {
+void SparseSSTable::recount() {
     sparse.clear();
-    json js = file.readFromFileAll(/*offset 0*/); //TODO change
-    size_t size = js.size();
-    auto v = js.get<std::vector<KeyOffset>>();
-    for (int i = 0; i < js.size(); i += 100) {
-        sparse.push_back(v[i]);
+    size_t size = file.number_of_lines;
+    for (int i = 0; i < size; i += 100) {
+        sparse.push_back(file.readFromFile(i));
     }
 }
 

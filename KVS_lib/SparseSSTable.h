@@ -8,13 +8,15 @@
 //#include "SStable.h"
 
 class SparseSSTable {
-    char const *ch = "";
+    SSTableFileHandler file;
     std::vector<KeyOffset> sparse = {};
-    std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> getBounds(const Key& key);
-    //    поля:
+   //    поля:
 //            array <pair<key, offset>>
 
 public:
-    void recount(SSTableFileHandler f);
+    void recount();
+    std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> getBounds(const Key& key);
+
+    SparseSSTable(SSTableFileHandler fileHandler) : file(std::move(fileHandler)) {}
 };
 

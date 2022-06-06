@@ -9,7 +9,7 @@
 struct SSTable {
     SSTableFileHandler file;
 
-    SSTable(SSTableFileHandler file_) : file(std::move(file_)) {}
+    SSTable(SSTableFileHandler file_) : sparseSSTable(file_),  file(std::move(file_)) {}
 
     void addLog(const std::vector<KeyOffset> &toAdd);
 
