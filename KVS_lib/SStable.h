@@ -7,9 +7,9 @@
 #include "SparseSSTable.h"
 
 struct SSTable {
-    sstableFileHandler file;
+    SSTableFileHandler file;
 
-    SSTable(sstableFileHandler file_) : file(std::move(file_)) {}
+    SSTable(SSTableFileHandler file_) : file(std::move(file_)) {}
 
     void addLog(const std::vector<KeyOffset> &toAdd);
 

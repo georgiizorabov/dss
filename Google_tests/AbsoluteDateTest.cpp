@@ -2,39 +2,25 @@
 #include "KVS.h"
 #include <fstream>
 
-void SetUpTest() {
-    std::ofstream ofs1("outputData.json");
-    std::ofstream ofs2("outputSStable.json");
-    ofs1 << "";
-    ofs2 << "";
-}
-
 class KVS_tester : public ::testing::Test {
+
+protected:
 public:
-    KeyValue ko1, ko2, ko3, ko4;
+//    KVS_tester() {}
+
 protected:
     virtual void SetUp() {
-         ko1 = KeyValue("k1", 1, "v1", 1);
-         ko2 = KeyValue("k1", 1, "v1", 1);
-         ko3 = KeyValue("k1", 1, "v1", 1);
-         ko4 = KeyValue("k1", 1, "v1", 1);
+        std::ofstream ofs1("outputData.json");
+        std::ofstream ofs2("outputSStable.json");
+        ofs1 << "";
+        ofs2 << "";
     }
 };
 
 
-TEST_F(KVS_tester, ExampleDate) {
+TEST_F(KVS_tester, testLog) { // 12/2/2020 -> 737761
     KeyValueStore kvs;
-    kvs.add(ko1);
-    kvs.add(ko2);
-    kvs.add(ko3);
-    kvs.add(ko4);
-
-//    EXPECT_EQ(1, 1);
-}
-
-TEST(AbsoluteDateTestSuite, testLog) { // 12/2/2020 -> 737761
-    KeyValueStore kvs;
-    SetUpTest();
+//    SetUpTest();
     auto key1 = Key("k1", 1);
     auto value1 = Value("v1", 1);
     auto kv1 = KeyValue(key1, value1);
@@ -58,9 +44,9 @@ TEST(AbsoluteDateTestSuite, testLog) { // 12/2/2020 -> 737761
 
 }
 
-TEST(AbsoluteDateTestSuite, testSSTable) { // 12/2/2020 -> 737761
+TEST_F(KVS_tester, testSSTable) { // 12/2/2020 -> 737761
     KeyValueStore kvs;
-    SetUpTest();
+//    SetUpTest();
     for (int i = 0; i < 20; i++) {
         auto key = Key("k" + std::to_string(i), 1);
         auto value = Value("v" + std::to_string(i), 1);
