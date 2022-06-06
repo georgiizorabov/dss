@@ -13,6 +13,10 @@ struct SSTableFileHandler{
     void writeToFile(const json &j);
     json readFromFile(long offset);
     json readFromFileAll();
+
+
+    void clear_file();
+
 };
 
 struct DataFileHandler{

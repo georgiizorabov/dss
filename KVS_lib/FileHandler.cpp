@@ -8,8 +8,14 @@ void SSTableFileHandler::writeToFile(const json &j) {
     std::ofstream ofs(fileName, std::ios_base::app);
     for (const auto &el: j) {
         ofs << el << std::endl;
+        number_of_lines++;
     }
-    number_of_lines++;
+}
+
+void SSTableFileHandler::clear_file() {
+    std::ofstream ofs(fileName);
+    ofs << "";
+    number_of_lines = 0;
 }
 
 json SSTableFileHandler::readFromFile(long offset) {
