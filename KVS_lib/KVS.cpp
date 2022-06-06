@@ -125,7 +125,7 @@ void to_json(json &j, const std::vector<KeyOffset> &kv) {
 
 void KeyValueStore::add(const KeyValue &kv) {
     file.writeToFile(kv);
-    if(log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size()))){
+    while(!log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size()))){
         ssTable.addLog(log.getLog());
         log.clear();
     }
