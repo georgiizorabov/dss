@@ -16,7 +16,8 @@ void SSTable::addLog(const std::vector<KeyOffset> &vec) {
     for (const auto &el: vec) {
         filter.addElement(el.getKey());
     }
-    std::sort(vi.begin(), vi.end(), [](const KeyOffset& a, const KeyOffset& b){return strcmp(a.getKey().getKey().c_str(), b.getKey().getKey().c_str());});
+    std::sort(vi.begin(), vi.end(), [](const KeyOffset& a, const KeyOffset& b)
+    {return a.getKey().getKey() < b.getKey().getKey();});
     file.clear_file();
     file.writeToFile(json(vi));
     sparseSSTable.recount();
