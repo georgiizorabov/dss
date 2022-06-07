@@ -28,13 +28,11 @@ json SSTableFileHandler::readFromFile(long offset) {
     auto jf = json::parse<>(value);
     KeyOffset ko = KeyOffset(Key("boobooboo", 0), 0); // FTODO change
     from_json(jf, ko);
-//    std::cout << "NEW0: " << ifs.rdbuf();
     ifs.seekg(offset);
-    std::cout << "Old: " << jf<< " NEW: " << ifs.rdbuf();
     return ko;
 }
 
-SSTableFileHandler::SSTableFileHandler(std::string s){
+SSTableFileHandler::SSTableFileHandler(std::string s) {
     fileName = std::move(s);
     std::string line;
     std::ifstream file(fileName);
@@ -56,7 +54,12 @@ json SSTableFileHandler::readFromFileAll() {
 
 
 void DataFileHandler::writeToFile(const json &j) {
-    current_offset += to_string(j).size() + sizeof("\n");
+    current_offset += to_string(j).size()
+#ifdef linux
+                      + sizeof('\n');
+#elif _WIN32
+    + sizeof("\n");
+#endif
     std::ofstream ofs(fileName, std::ios_base::app);
     ofs << j << '\n';
     ofs.close();
@@ -64,7 +67,6 @@ void DataFileHandler::writeToFile(const json &j) {
 
 KeyValue DataFileHandler::readFromFile(long offset) {
     std::ifstream ifs(fileName);
-//      ifs.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     ifs.clear();
     ifs.seekg(offset);
     std::string value;

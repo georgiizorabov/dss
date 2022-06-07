@@ -79,15 +79,7 @@ std::optional<long> SSTable::find(const Key &key) {
                 return file.readFromFile(i).get<KeyOffset>().getOffset();
         }
     }
-    /*auto data = file.readFromFileAll( *//* 0  offset *//*);
-    std::vector<KeyOffset> v;
-    from_json(data, v);
-    for (const auto &el: v) {
-        if (el.getKey().getKey() == key.getKey()) {
-            return el.getOffset();
-        }
-    }
-    */
+
     return std::nullopt;
 }
 

@@ -12,7 +12,7 @@ public:
 
     void add(const KeyValue &);
 
-    std::optional<KeyValue> get(const Key &); // Желательно добавить сюда const в конец (по возможности)
+    std::optional<KeyValue> get(const Key &);
     void del(const Key &);
 
     Log log;

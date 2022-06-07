@@ -6,7 +6,6 @@ class KVS_tester : public ::testing::Test {
 
 protected:
 public:
-//    KVS_tester() {}
 
 protected:
     virtual void SetUp() {
@@ -18,9 +17,8 @@ protected:
 };
 
 
-TEST_F(KVS_tester, testLog) { // 12/2/2020 -> 737761
+TEST_F(KVS_tester, testLog) {
     KeyValueStore kvs;
-//    SetUpTest();
     auto key1 = Key("k1", 1);
     auto value1 = Value("v1", 1);
     auto kv1 = KeyValue(key1, value1);
@@ -44,9 +42,8 @@ TEST_F(KVS_tester, testLog) { // 12/2/2020 -> 737761
 
 }
 
-TEST_F(KVS_tester, testSSTable) { // 12/2/2020 -> 737761
+TEST_F(KVS_tester, testSSTable) {
     KeyValueStore kvs;
-//    SetUpTest();
     for (int i = 0; i < 20; i++) {
         auto key = Key("k" + std::to_string(i), 1);
         auto value = Value("v" + std::to_string(i), 1);
