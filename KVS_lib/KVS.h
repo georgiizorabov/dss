@@ -8,7 +8,7 @@
 
 class KeyValueStore {
 public:
-    KeyValueStore();
+    KeyValueStore(int sz = 100);
 
     void add(const KeyValue &);
 

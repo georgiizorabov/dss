@@ -5,10 +5,10 @@
 
 
 Filter::Filter(const std::vector<Key> &vec) : Filter() {
-        // Insert some keys
-        for (const auto &i: vec) {
-            filter.insert(i);
-        }
+    // Insert some keys
+    for (const auto &i: vec) {
+        filter.insert(i);
+    }
 
 }
 
@@ -20,12 +20,10 @@ bool Filter::isPresent(const Key &k) const {
     return filter.contains(k.getKey());
 }
 
-void Filter::removeElement() {
-//        filter.
-}
 
 void Filter::clear() {
     filter.clear();
+    deletedElems = 0;
 }
 
 Filter::Filter() {
@@ -43,4 +41,3 @@ Filter::Filter() {
     bloom_filter filter1(parameters);
     filter = filter1;
 }
-

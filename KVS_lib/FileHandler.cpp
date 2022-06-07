@@ -56,7 +56,7 @@ json SSTableFileHandler::readFromFileAll() {
 
 
 void DataFileHandler::writeToFile(const json &j) {
-    current_offset += to_string(j).size() + 2;
+    current_offset += to_string(j).size() + sizeof('\n');
     std::ofstream ofs(fileName, std::ios_base::app);
     ofs << j << std::endl;
 }

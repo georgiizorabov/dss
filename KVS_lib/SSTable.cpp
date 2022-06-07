@@ -28,9 +28,7 @@ void SSTable::addLog(const std::vector<KeyOffset> &vec) {
     }
 
     std::vector<std::pair<KeyOffset, int>> viMergedInd;
-    for (const auto &el: vec) {
-        filter.addElement(el.getKey());
-    }
+
     std::merge(viOldInd.begin(), viOldInd.end(), viNewInd.begin(), viNewInd.end(),
                std::back_inserter(viMergedInd),
                [](const std::pair<KeyOffset, int> &a, const std::pair<KeyOffset, int> &b) {
@@ -53,6 +51,17 @@ void SSTable::addLog(const std::vector<KeyOffset> &vec) {
 
     file.clear_file();
     file.writeToFile(json(viMerged));
+    for (const auto &el: vec) {
+        filter.addElement(el.getKey());
+        if (filter.deletedElems >= 1000) {
+            filter.clear();
+            std::vector<Key> filterVec;
+            std::transform(viMerged.begin(), viMerged.end(), std::back_inserter(filterVec),
+                           [](KeyOffset const &ko) { return ko.getKey(); });
+            filter = Filter(filterVec);
+        }
+    }
+
     sparseSSTable.recount();
 }
 
