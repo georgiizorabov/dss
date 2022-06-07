@@ -48,15 +48,15 @@ void to_json(json &j, const std::vector<KeyValue> &kv);
 
 class KeyOffset {
     Key key;
-    long offset;
+    size_t offset;
 public:
-    long getOffset() const;
+    size_t getOffset() const;
 
     Key getKey() const;
 
     KeyOffset();
 
-    KeyOffset(Key key, long i, bool deleted = false);
+    KeyOffset(Key key, size_t i, bool deleted = false);
 
     bool deleted /*= false*/;
 };

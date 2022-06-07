@@ -20,7 +20,7 @@ struct SSTableFileHandler{
 };
 
 struct DataFileHandler{
-
+    size_t current_offset = 0;
     std::string fileName;
     DataFileHandler(std::string);
     void writeToFile(const json &j);

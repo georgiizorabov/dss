@@ -20,7 +20,4 @@ public:
     SSTable ssTable;
     DataFileHandler file;
 
-//    KeyValueStore(){
-//
-//    }
 };

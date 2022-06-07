@@ -56,15 +56,15 @@ json SSTableFileHandler::readFromFileAll() {
 
 
 void DataFileHandler::writeToFile(const json &j) {
+    current_offset += to_string(j).size();
     std::ofstream ofs(fileName, std::ios_base::app);
     ofs << j << std::endl;
 }
 
 KeyValue DataFileHandler::readFromFile(long offset) {
     std::ifstream ifs(fileName);
-    for (int i = 0; i < offset; ++i) {
-        ifs.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    }
+//      ifs.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    ifs.seekg(offset);
     std::string value;
     std::getline(ifs, value);
     auto jf = json::parse<>(value);

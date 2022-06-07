@@ -100,11 +100,11 @@ Key KeyOffset::getKey() const {
     return key;
 }
 
-long KeyOffset::getOffset() const {
+size_t KeyOffset::getOffset() const {
     return offset;
 }
 
-KeyOffset::KeyOffset(Key key, long i, bool deleted) : key(std::move(key)), offset(i), deleted(deleted) {}
+KeyOffset::KeyOffset(Key key, size_t i, bool deleted) : key(std::move(key)), offset(i), deleted(deleted) {}
 
 KeyOffset::KeyOffset() : key(Key("1", 1)), offset(1) {}
 
@@ -126,11 +126,13 @@ void to_json(json &j, const std::vector<KeyOffset> &kv) {
 
 }
 
+
 void KeyValueStore::add(const KeyValue &kv) {
     file.writeToFile(kv);
-    while (!log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size(), false))) {
-        ssTable.addLog(log.getLog());
+    KeyOffset keyOffset = KeyOffset(kv.getKey(), file.current_offset, false);
+    while (!log.add(keyOffset)) {
         log.clear();
+        ssTable.addLog(log.getLog());
     }
 }
 
