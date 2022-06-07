@@ -214,6 +214,16 @@ TEST_F(KVS_tester, testMergeAddDeleteAdd) {
                  kvs.get(key).value().getValue().getValue().c_str());
 }
 
+TEST_F(KVS_tester, testFilter) {
+    std::vector<Key> vec = {Key("k1"), Key("k2"), Key("k3"), Key("k4"), Key("k5")};
+    Filter f(vec);
+    for (const auto &el: vec) {
+        EXPECT_TRUE(f.isPresent(el));
+    }
+
+    EXPECT_FALSE(f.isPresent(Key("k6")));
+}
+
 TEST_F(KVS_tester, testClearFile) {
     KeyValueStore kvs(10);
 
