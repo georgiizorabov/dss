@@ -5,12 +5,11 @@ size_t SSTableFileHandler::number_of_lines = 0;
 std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::getBounds(const Key &key) {
     std::optional<KeyOffset> start;
     std::optional<KeyOffset> end;
-//    for (auto & i : sparse) {
-    for (size_t i = 0; i < sparse.size(); i++) {
-        if (strcmp(sparse[i].getKey().getKey().c_str(), key.getKey().c_str()) <= 0)
-            start = sparse[i];
-        if (strcmp(sparse[i].getKey().getKey().c_str(), key.getKey().c_str()) > 0) {
-            end = sparse[i];
+    for (auto & i : sparse) {
+        if (strcmp(i.getKey().getKey().c_str(), key.getKey().c_str()) <= 0)
+            start = i;
+        if (strcmp(i.getKey().getKey().c_str(), key.getKey().c_str()) > 0) {
+            end = i;
             break;
         }
     }
