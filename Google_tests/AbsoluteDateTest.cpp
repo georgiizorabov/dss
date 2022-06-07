@@ -165,6 +165,57 @@ TEST_F(KVS_tester, testDeleteNonExisting) {
 
 }
 
+TEST_F(KVS_tester, testMergeAddDelete) {
+    KeyValueStore kvs(10);
+
+    for (int i = 0; i < 9; i++) {
+        auto key = Key("k" + std::to_string(i), 1);
+        auto value = Value("v" + std::to_string(i), 1);
+        auto kv = KeyValue(key, value);
+        kvs.add(kv);
+    }
+
+    auto key = Key("k1", 1);
+    auto value = Value("v1", 1);
+    auto kv = KeyValue(key, value);
+
+    EXPECT_STREQ(value.getValue().c_str(),
+                 kvs.get(key).value().getValue().getValue().c_str());
+
+    kvs.del(key);
+
+    EXPECT_EQ(std::nullopt,
+              kvs.get(key));
+}
+
+
+TEST_F(KVS_tester, testMergeAddDeleteAdd) {
+    KeyValueStore kvs(10);
+
+    for (int i = 0; i < 8; i++) {
+        auto key = Key("k" + std::to_string(i), 1);
+        auto value = Value("v" + std::to_string(i), 1);
+        auto kv = KeyValue(key, value);
+        kvs.add(kv);
+    }
+
+    auto key = Key("k1", 1);
+    auto value = Value("v1", 1);
+    auto kv = KeyValue(key, value);
+
+    EXPECT_STREQ(value.getValue().c_str(),
+                 kvs.get(key).value().getValue().getValue().c_str());
+
+    kvs.del(key);
+
+    EXPECT_EQ(std::nullopt,
+              kvs.get(key));
+
+    kvs.add(kv);
+
+    EXPECT_STREQ(value.getValue().c_str(),
+                 kvs.get(key).value().getValue().getValue().c_str());
+}
 
 
 
