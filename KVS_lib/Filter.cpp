@@ -7,7 +7,7 @@
 Filter::Filter(const std::vector<Key> &vec) : Filter() {
     // Insert some keys
     for (const auto &i: vec) {
-        filter.insert(i);
+        filter.insert(i.getKey());
     }
 
 }

@@ -214,23 +214,23 @@ TEST_F(KVS_tester, testMergeAddDeleteAdd) {
                  kvs.get(key).value().getValue().getValue().c_str());
 }
 
-TEST_F(KVS_tester, testClearFile) {
+TEST_F(KVS_tester, testSparse) {
     KeyValueStore kvs(10);
 
-    for (int i = 0; i < 200; i++) {
+    for (int i = 0; i < 2000; i++) {
         auto key = Key("k" + std::to_string(i), 1);
         auto value = Value("v" + std::to_string(i), 1);
         auto kv = KeyValue(key, value);
         kvs.add(kv);
     }
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 1000; i++) {
         auto key = Key("k" + std::to_string(i), 1);
         kvs.del(key);
     }
 
-    auto key1 = Key("k101", 1);
-    auto value1 = Value("v101", 1);
+    auto key1 = Key("k1001", 1);
+    auto value1 = Value("v1001", 1);
     auto kv1 = KeyValue(key1, value1);
 
     EXPECT_STREQ(value1.getValue().c_str(),
@@ -244,3 +244,37 @@ TEST_F(KVS_tester, testClearFile) {
               kvs.get(key2));
 }
 
+TEST_F(KVS_tester, testFilter) {
+    std::vector<Key> vec = {Key("k1", 1), Key("k2", 1), Key("k3", 1), Key("k4", 1), Key("k5", 1)};
+    Filter f(vec);
+    for (const auto &el: vec) {
+        EXPECT_TRUE(f.isPresent(el));
+    }
+
+    EXPECT_FALSE(f.isPresent(Key("k6", 1)));
+}
+
+TEST_F(KVS_tester, testClearFile) {
+    KeyValueStore kvs(10);
+
+    for (int i = 0; i < 2000; i++) {
+        auto key = Key("k" + std::to_string(i), 1);
+        auto value = Value("v" + std::to_string(i), 1);
+        auto kv = KeyValue(key, value);
+        kvs.add(kv);
+    }
+
+    for (int i = 0; i < 1000; i++) {
+        auto key = Key("k" + std::to_string(i), 1);
+        kvs.del(key);
+    }
+    std::ifstream ifs("outputData.json");
+    std::string line;
+    int num = 0;
+    while (std::getline(ifs, line)) {
+        num++;
+    }
+
+    EXPECT_EQ(1000, num);
+
+}
