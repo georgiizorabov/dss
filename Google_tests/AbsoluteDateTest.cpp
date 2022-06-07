@@ -218,26 +218,26 @@ TEST_F(KVS_tester, testSparse) {
     KeyValueStore kvs(10);
 
     for (int i = 0; i < 2000; i++) {
-        auto key = Key("k" + std::to_string(i), 1);
-        auto value = Value("v" + std::to_string(i), 1);
+        auto key = Key("k" + std::to_string(i), 2);
+        auto value = Value("v" + std::to_string(i), 2);
         auto kv = KeyValue(key, value);
         kvs.add(kv);
     }
 
     for (int i = 0; i < 1000; i++) {
-        auto key = Key("k" + std::to_string(i), 1);
+        auto key = Key("k" + std::to_string(i), 2);
         kvs.del(key);
     }
 
-    auto key1 = Key("k1001", 1);
-    auto value1 = Value("v1001", 1);
+    auto key1 = Key("k1001", 5);
+    auto value1 = Value("v1001", 5);
     auto kv1 = KeyValue(key1, value1);
 
     EXPECT_STREQ(value1.getValue().c_str(),
                  kvs.get(key1).value().getValue().getValue().c_str());
 
-    auto key2 = Key("k999", 1);
-    auto value2 = Value("v999", 1);
+    auto key2 = Key("k999", 4);
+    auto value2 = Value("v999", 4);
     auto kv2 = KeyValue(key2, value2);
 
     EXPECT_EQ(std::nullopt,
@@ -245,27 +245,27 @@ TEST_F(KVS_tester, testSparse) {
 }
 
 TEST_F(KVS_tester, testFilter) {
-    std::vector<Key> vec = {Key("k1", 1), Key("k2", 1), Key("k3", 1), Key("k4", 1), Key("k5", 1)};
+    std::vector<Key> vec = {Key("k1", 2), Key("k2", 2), Key("k3", 2), Key("k4", 2), Key("k5", 2)};
     Filter f(vec);
     for (const auto &el: vec) {
         EXPECT_TRUE(f.isPresent(el));
     }
 
-    EXPECT_FALSE(f.isPresent(Key("k6", 1)));
+    EXPECT_FALSE(f.isPresent(Key("k6", 2)));
 }
 
 TEST_F(KVS_tester, testClearFile) {
     KeyValueStore kvs(10);
 
     for (int i = 0; i < 2000; i++) {
-        auto key = Key("k" + std::to_string(i), 1);
-        auto value = Value("v" + std::to_string(i), 1);
+        auto key = Key("k" + std::to_string(i), 2);
+        auto value = Value("v" + std::to_string(i), 2);
         auto kv = KeyValue(key, value);
         kvs.add(kv);
     }
 
     for (int i = 0; i < 1000; i++) {
-        auto key = Key("k" + std::to_string(i), 1);
+        auto key = Key("k" + std::to_string(i), 2);
         kvs.del(key);
     }
     std::ifstream ifs("outputData.json");

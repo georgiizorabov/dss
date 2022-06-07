@@ -179,7 +179,7 @@ std::optional<KeyValue> KeyValueStore::get(const Key &key) {
 }
 
 void KeyValueStore::del(const Key &k) {
-    auto kv = KeyValue(k, Value("none", 1));
+    auto kv = KeyValue(k, Value("none", 4));
     file.writeToFile(kv);
     while (!log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size(), true))) {
         if (ssTable.addLog(log.getLog())) {
