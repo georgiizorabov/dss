@@ -10,7 +10,6 @@ struct Filter {
     bloom_parameters parameters;
     bloom_filter filter;
 
-    int deletedElems = 0;
 
     Filter(const std::vector<Key> &vec);
 

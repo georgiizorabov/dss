@@ -11,9 +11,11 @@ struct SSTable {
 
     SSTable(SSTableFileHandler file_, SparseSSTable sparseSsTable_) : sparseSSTable(std::move(sparseSsTable_)),  file(std::move(file_)) {}
 
-    void addLog(const std::vector<KeyOffset> &vec);
+    bool addLog(const std::vector<KeyOffset> &vec);
 
     long size = 0;
+
+    int deletedElems = 0;
 
     std::optional<long> find(const Key &key);
 

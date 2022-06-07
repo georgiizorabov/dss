@@ -23,7 +23,6 @@ bool Filter::isPresent(const Key &k) const {
 
 void Filter::clear() {
     filter.clear();
-    deletedElems = 0;
 }
 
 Filter::Filter() {

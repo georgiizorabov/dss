@@ -127,7 +127,6 @@ void to_json(json &j, const std::vector<KeyOffset> &kv) {
 }
 
 
-
 void KeyValueStore::add(const KeyValue &kv) {
     KeyOffset keyOffset = KeyOffset(kv.getKey(), file.current_offset, false);
     file.writeToFile(kv);
@@ -148,7 +147,7 @@ void KeyValueStore::rewriteDataFile() {
     DataFileHandler copy("outputDataCopy.json");
     auto vec = ssTable.getAll();
     ssTable.clear();
-    for (const auto& i : vec) {
+    for (const auto &i: vec) {
         KeyOffset keyOffset = KeyOffset(i.getKey(), copy.current_offset);
         KeyValue keyValue = file.readFromFile(i.getOffset());
         copy.writeToFile(keyValue);
@@ -161,6 +160,7 @@ void KeyValueStore::rewriteDataFile() {
     std::rename("outputDataCopy.json", "outputData.json");
     copy.fileName = "outputData.json";
     file = copy;
+    ssTable.sparseSSTable.recount();
 }
 
 std::optional<KeyValue> KeyValueStore::get(const Key &key) {
@@ -182,10 +182,12 @@ void KeyValueStore::del(const Key &k) {
     auto kv = KeyValue(k, Value("none", 1));
     file.writeToFile(kv);
     while (!log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size(), true))) {
-        ssTable.addLog(log.getLog());
+        if (ssTable.addLog(log.getLog())) {
+            rewriteDataFile();
+        }
         log.clear();
     }
-    ssTable.filter.deletedElems++;
+    ssTable.deletedElems++;
 }
 
 KeyValue::KeyValue(Key key, Value value) : key(std::move(key)), value(std::move(value)) {}

@@ -10,7 +10,7 @@
 
 using json = nlohmann::json;
 
-void SSTable::addLog(const std::vector<KeyOffset> &vec) {
+bool SSTable::addLog(const std::vector<KeyOffset> &vec) {
     json j;
     std::vector<KeyOffset> viOld = file.readFromFileAll().get<std::vector<KeyOffset>>();
     std::vector<KeyOffset> viNew;
@@ -37,7 +37,6 @@ void SSTable::addLog(const std::vector<KeyOffset> &vec) {
                });
 
     std::vector<KeyOffset> viMerged;
-    std::unordered_map<std::string, int> mp{};
 
     for (int i = 0; i < viMergedInd.size(); i++) {
 
@@ -51,18 +50,22 @@ void SSTable::addLog(const std::vector<KeyOffset> &vec) {
 
     file.clear_file();
     file.writeToFile(json(viMerged));
+
+    bool res = false;
     for (const auto &el: vec) {
         filter.addElement(el.getKey());
-        if (filter.deletedElems >= 1000) {
+        if (deletedElems >= 1000) {
             filter.clear();
+            deletedElems = 0;
             std::vector<Key> filterVec;
             std::transform(viMerged.begin(), viMerged.end(), std::back_inserter(filterVec),
                            [](KeyOffset const &ko) { return ko.getKey(); });
             filter = Filter(filterVec);
+            res = true;
         }
     }
-
     sparseSSTable.recount();
+    return res;
 }
 
 std::optional<long> SSTable::find(const Key &key) {
