@@ -26,7 +26,7 @@ json SSTableFileHandler::readFromFile(long offset) {
     std::string value;
     std::getline(ifs, value);
     auto jf = json::parse<>(value);
-    KeyOffset ko = KeyOffset(Key("boobooboo", 0), 0); // FTODO change
+    KeyOffset ko = KeyOffset(Key(""), 0);
     from_json(jf, ko);
     ifs.seekg(offset);
     return ko;
@@ -72,7 +72,7 @@ KeyValue DataFileHandler::readFromFile(long offset) {
     std::string value;
     std::getline(ifs, value);
     auto jf = json::parse<>(value);
-    KeyValue kv = KeyValue("nullptr", 0, "nullptr", 0);
+    KeyValue kv = KeyValue("nullptr", "nullptr");
     from_json(jf, kv);
 
     return kv;

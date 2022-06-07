@@ -5,34 +5,25 @@
 
 using json = nlohmann::json;
 
-Key::Key(std::string value, size_t size) :
-        key(std::move(value)),
-        size(size) {
-
-}
+Key::Key(std::string value) :
+        key(std::move(value))
+         {}
 
 std::string Key::getKey() const {
     return key;
 }
 
-size_t Key::getSize() const {
-    return size;
-}
 
-Value::Value(std::string value, size_t size) :
-        value(std::move(value)), size(size) {
-}
+Value::Value(std::string value) :
+        value(std::move(value)) {}
 
 std::string Value::getValue() const {
     return value;
 }
 
-size_t Value::getSize() const {
-    return size;
-}
 
-KeyValue::KeyValue(std::string key, size_t key_size, std::string value, size_t value_size) :
-        key(Key(std::move(key), key_size)), value(Value(std::move(value), value_size)) {
+KeyValue::KeyValue(std::string key, std::string value) :
+        key(std::move(key)), value(std::move(value)) {
 }
 
 Value KeyValue::getValue() const {
@@ -63,13 +54,13 @@ void from_json(const json &j, KeyValue &kv) {
     std::string value;
     j.at("key").get_to(key);
     j.at("value").get_to(value);
-    kv = KeyValue(Key(key, 1), Value(value, 1));
+    kv = KeyValue(key, value);
 }
 
 
 void from_json(const json &j, std::vector<KeyValue> &vec) {
     for (const json &i: j) {
-        KeyValue kv = KeyValue("nullptr", 0, "nullptr", 0);
+        KeyValue kv = KeyValue("nullptr", "nullptr");
         from_json(i, kv);
         vec.push_back(kv);
     }
@@ -83,7 +74,7 @@ void from_json(const json &j, KeyOffset &keyOffset) {
     j.at("key").get_to(key);
     j.at("deleted").get_to(deleted);
     j.at("offset").get_to(offset);
-    keyOffset = KeyOffset(Key(key, 1), atoi(offset.c_str()), deleted);
+    keyOffset = KeyOffset(key, atoi(offset.c_str()), deleted);
 }
 
 
@@ -106,7 +97,7 @@ size_t KeyOffset::getOffset() const {
 
 KeyOffset::KeyOffset(Key key, size_t i, bool deleted) : key(std::move(key)), offset(i), deleted(deleted) {}
 
-KeyOffset::KeyOffset() : key(Key("1", 1)), offset(1) {}
+KeyOffset::KeyOffset() : key("1"), offset(1) {}
 
 void to_json(json &j, const KeyOffset &ko) {
 
@@ -179,7 +170,7 @@ std::optional<KeyValue> KeyValueStore::get(const Key &key) {
 }
 
 void KeyValueStore::del(const Key &k) {
-    auto kv = KeyValue(k, Value("none", 1));
+    auto kv = KeyValue(k, Value("none"));
     file.writeToFile(kv);
     while (!log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size(), true))) {
         if (ssTable.addLog(log.getLog())) {

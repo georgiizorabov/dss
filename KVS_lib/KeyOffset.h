@@ -9,31 +9,26 @@ using json = nlohmann::json;
 
 class Key {
     std::string key;
-    size_t size;
 public:
-    Key(std::string value, size_t size);
+    Key(std::string value);
 
-    std::string getKey() const;
+    [[nodiscard]] std::string getKey() const;
 
-    size_t getSize() const;
 };
 
 struct Value {
     std::string value;
-    size_t size;
 public:
-    Value(std::string value, size_t size);
+    Value(std::string value);
 
-    std::string getValue() const;
-
-    size_t getSize() const;
+    [[nodiscard]] std::string getValue() const;
 };
 
 struct KeyValue {
     Key key;
     Value value;
 public:
-    KeyValue(std::string key, size_t key_size, std::string value, size_t value_size);
+    KeyValue(std::string key, std::string value);
 
     KeyValue(Key  key, Value  value);
 
