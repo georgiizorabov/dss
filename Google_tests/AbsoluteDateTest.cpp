@@ -152,6 +152,14 @@ TEST_F(KVS_tester, testDeleteNonExisting) {
               kvs.get(key1));
 
     kvs.add(kv1);
+
+    for (int i = 41; i < 60; i++) {
+        auto key = Key("k" + std::to_string(i), 1);
+        auto value = Value("v" + std::to_string(i), 1);
+        auto kv = KeyValue(key, value);
+        kvs.add(kv);
+    }
+
     EXPECT_STREQ(value1.getValue().c_str(),
                  kvs.get(key1).value().getValue().getValue().c_str());
 
