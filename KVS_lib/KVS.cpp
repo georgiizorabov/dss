@@ -127,6 +127,7 @@ void to_json(json &j, const std::vector<KeyOffset> &kv) {
 }
 
 
+
 void KeyValueStore::add(const KeyValue &kv) {
     KeyOffset keyOffset = KeyOffset(kv.getKey(), file.current_offset, false);
     file.writeToFile(kv);
@@ -139,6 +140,28 @@ void KeyValueStore::add(const KeyValue &kv) {
 KeyValueStore::KeyValueStore(int sz) : ssTable(
         SSTable(SSTableFileHandler("outputSStable.json"), SparseSSTable("outputSStable.json"))),
                                        file("outputData.json"), log(sz) {}
+
+
+void KeyValueStore::rewriteDataFile() {
+    ssTable.addLog(log.getLog());
+    log.clear();
+    DataFileHandler copy("outputDataCopy.json");
+    auto vec = ssTable.getAll();
+    ssTable.clear();
+    for (const auto& i : vec) {
+        KeyOffset keyOffset = KeyOffset(i.getKey(), copy.current_offset);
+        KeyValue keyValue = file.readFromFile(i.getOffset());
+        copy.writeToFile(keyValue);
+        while (!log.add(keyOffset)) {
+            ssTable.addLog(log.getLog());
+            log.clear();
+        }
+    }
+    std::remove(file.fileName.c_str());
+    std::rename("outputDataCopy.json", "outputData.json");
+    copy.fileName = "outputData.json";
+    file = copy;
+}
 
 std::optional<KeyValue> KeyValueStore::get(const Key &key) {
     auto inLog = log.find(key);

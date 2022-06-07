@@ -91,5 +91,10 @@ std::optional<long> SSTable::find(const Key &key) {
     return std::nullopt;
 }
 
-void SSTable::removeElement() {
+std::vector<KeyOffset> SSTable::getAll() {
+    return file.readFromFileAll().get<std::vector<KeyOffset>>();
+}
+
+void SSTable::clear() {
+    file.clear_file();
 }

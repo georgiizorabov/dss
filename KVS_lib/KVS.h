@@ -15,9 +15,9 @@ public:
     std::optional<KeyValue> get(const Key &); // Желательно добавить сюда const в конец (по возможности)
     void del(const Key &);
 
-
     Log log;
     SSTable ssTable;
     DataFileHandler file;
 
+    void rewriteDataFile();
 };

@@ -17,9 +17,10 @@ struct SSTable {
 
     std::optional<long> find(const Key &key);
 
-    void removeElement();
-
+    std::vector<KeyOffset> getAll();
     Filter filter;
     SparseSSTable sparseSSTable;
+
+    void clear();
 };
 
