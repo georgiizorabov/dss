@@ -6,7 +6,7 @@ std::pair<std::optional<KeyOffset>, std::optional<KeyOffset>> SparseSSTable::get
     std::optional<KeyOffset> start;
     std::optional<KeyOffset> end;
 //    for (auto & i : sparse) {
-    for (int i = sparse.size() - 1; i >= 0; i--) {
+    for (size_t i = 0; i < sparse.size(); i++) {
         if (strcmp(sparse[i].getKey().getKey().c_str(), key.getKey().c_str()) <= 0)
             start = sparse[i];
         if (strcmp(sparse[i].getKey().getKey().c_str(), key.getKey().c_str()) > 0) {
@@ -21,7 +21,7 @@ void SparseSSTable::recount() {
     sparse.clear();
     size_t size = SSTableFileHandler::number_of_lines;
     for (int i = 0; i < size; i += 100) {
-        sparse.push_back(file.readFromFile(i));
+        sparse.emplace_back(file.readFromFile(i).get<KeyOffset>().getKey(), i);
     }
 }
 
