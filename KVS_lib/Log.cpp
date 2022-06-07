@@ -6,7 +6,7 @@
 std::optional<KeyOffset> Log::find(const Key& key) {
     for (const auto &el: log) {
         if (el.getKey().getKey() == key.getKey()) {
-            return (KeyOffset(el.getKey(), el.getOffset()));
+            return (KeyOffset(el.getKey(), el.getOffset(), el.deleted));
         }
     }
     return std::nullopt;

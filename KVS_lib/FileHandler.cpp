@@ -28,7 +28,9 @@ json SSTableFileHandler::readFromFile(long offset) {
     auto jf = json::parse<>(value);
     KeyOffset ko = KeyOffset(Key("boobooboo", 0), 0); // FTODO change
     from_json(jf, ko);
-
+//    std::cout << "NEW0: " << ifs.rdbuf();
+    ifs.seekg(offset);
+    std::cout << "Old: " << jf<< " NEW: " << ifs.rdbuf();
     return ko;
 }
 

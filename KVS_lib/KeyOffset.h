@@ -56,7 +56,9 @@ public:
 
     KeyOffset();
 
-    KeyOffset(Key key, long i);
+    KeyOffset(Key key, long i, bool deleted = false);
+
+    bool deleted /*= false*/;
 };
 
 void to_json(json &j, const KeyOffset &ko);

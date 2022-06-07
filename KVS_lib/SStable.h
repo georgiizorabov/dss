@@ -11,7 +11,7 @@ struct SSTable {
 
     SSTable(SSTableFileHandler file_, SparseSSTable sparseSsTable_) : sparseSSTable(std::move(sparseSsTable_)),  file(std::move(file_)) {}
 
-    void addLog(const std::vector<KeyOffset> &toAdd);
+    void addLog(const std::vector<KeyOffset> &vec);
 
     long size = 0;
 

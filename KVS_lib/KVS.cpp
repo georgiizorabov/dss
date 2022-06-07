@@ -52,7 +52,7 @@ void to_json(json &j, const KeyValue &kv) {
 
 void to_json(json &j, const std::vector<KeyValue> &kv) {
 
-    for (const auto& rec: kv) {
+    for (const auto &rec: kv) {
         j.push_back(rec);
     }
 
@@ -79,9 +79,11 @@ void from_json(const json &j, std::vector<KeyValue> &vec) {
 void from_json(const json &j, KeyOffset &keyOffset) {
     std::string key;
     std::string offset;
+    bool deleted;
     j.at("key").get_to(key);
+    j.at("deleted").get_to(deleted);
     j.at("offset").get_to(offset);
-    keyOffset = KeyOffset(Key(key, 64), atoi(offset.c_str()));
+    keyOffset = KeyOffset(Key(key, 1), atoi(offset.c_str()), deleted);
 }
 
 
@@ -102,22 +104,23 @@ long KeyOffset::getOffset() const {
     return offset;
 }
 
-KeyOffset::KeyOffset(Key key, long i) : key(std::move(key)), offset(i) {}
+KeyOffset::KeyOffset(Key key, long i, bool deleted) : key(std::move(key)), offset(i), deleted(deleted) {}
 
 KeyOffset::KeyOffset() : key(Key("1", 1)), offset(1) {}
 
 void to_json(json &j, const KeyOffset &ko) {
 
     j = json{
-            {"key",    ko.getKey().getKey()},
-            {"offset", std::to_string(ko.getOffset())}
+            {"key",     ko.getKey().getKey()},
+            {"offset",  std::to_string(ko.getOffset())},
+            {"deleted", ko.deleted}
     };
 
 }
 
 void to_json(json &j, const std::vector<KeyOffset> &kv) {
 
-    for (const auto& rec: kv) {
+    for (const auto &rec: kv) {
         j.push_back(rec);
     }
 
@@ -125,24 +128,38 @@ void to_json(json &j, const std::vector<KeyOffset> &kv) {
 
 void KeyValueStore::add(const KeyValue &kv) {
     file.writeToFile(kv);
-    while(!log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size()))){
+    while (!log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size(), false))) {
         ssTable.addLog(log.getLog());
         log.clear();
     }
 }
 
-KeyValueStore::KeyValueStore() : ssTable(SSTable(SSTableFileHandler("outputSStable.json"), SparseSSTable("outputSStable.json"))), file("outputData.json"), log(1) {}
+KeyValueStore::KeyValueStore() : ssTable(
+        SSTable(SSTableFileHandler("outputSStable.json"), SparseSSTable("outputSStable.json"))),
+                                 file("outputData.json"), log(1) {}
 
 std::optional<KeyValue> KeyValueStore::get(const Key &key) {
     auto inLog = log.find(key);
     if (inLog.has_value()) {
+        if (inLog.value().deleted) {
+            return std::nullopt;
+        }
         return file.readFromFile(inLog->getOffset());
     }
     auto offset = ssTable.find(key);
-    if(offset.has_value()) {
+    if (offset.has_value()) {
         return file.readFromFile(offset.value());
     }
     return std::nullopt;
 }
 
-KeyValue::KeyValue(Key  key, Value  value) : key(std::move(key)), value(std::move(value)) {}
+void KeyValueStore::del(const Key &k) {
+    auto kv = KeyValue(k, Value("none", 1));
+    file.writeToFile(kv);
+    while (!log.add(KeyOffset(kv.getKey(), ssTable.size + log.getLog().size(), true))) {
+        ssTable.addLog(log.getLog());
+        log.clear();
+    }
+}
+
+KeyValue::KeyValue(Key key, Value value) : key(std::move(key)), value(std::move(value)) {}
