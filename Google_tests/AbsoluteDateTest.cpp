@@ -69,18 +69,22 @@ TEST_F(KVS_tester, testDeleteLog) {
         auto kv = KeyValue(key, value);
         kvs.add(kv);
     }
-    auto key = Key("k11", 1);
-    auto value = Value("v1", 1);
-    auto kv = KeyValue(key, value);
 
-    kvs.del(key);
+    for (int i = 0; i < 10; i++) {
 
-    EXPECT_EQ(std::nullopt,
-                 kvs.get(key));
+        auto key = Key("k" + std::to_string(i), 1);
+        auto value = Value("v" + std::to_string(i), 1);
+        auto kv = KeyValue(key, value);
 
-    kvs.add(kv);
-    EXPECT_STREQ(value.getValue().c_str(),
+        kvs.del(key);
+
+        EXPECT_EQ(std::nullopt,
+                  kvs.get(key));
+
+        kvs.add(kv);
+        EXPECT_STREQ(value.getValue().c_str(),
                      kvs.get(key).value().getValue().getValue().c_str());
+    }
 
 }
 
@@ -97,6 +101,45 @@ TEST_F(KVS_tester, testDeleteSSTable) {
     auto kv1 = KeyValue(key1, value1);
 
     kvs.del(key1);
+
+    EXPECT_EQ(std::nullopt,
+              kvs.get(key1));
+
+    for (int i = 21; i < 40; i++) {
+        auto key = Key("k" + std::to_string(i), 1);
+        auto value = Value("v" + std::to_string(i), 1);
+        auto kv = KeyValue(key, value);
+        kvs.add(kv);
+    }
+
+    EXPECT_EQ(std::nullopt,
+              kvs.get(key1));
+
+    kvs.add(kv1);
+    EXPECT_STREQ(value1.getValue().c_str(),
+                 kvs.get(key1).value().getValue().getValue().c_str());
+
+}
+
+
+TEST_F(KVS_tester, testDeleteNonExisting) {
+    KeyValueStore kvs;
+
+    for (int i = 0; i < 20; i++) {
+        auto key = Key("k" + std::to_string(i), 1);
+        auto value = Value("v" + std::to_string(i), 1);
+        auto kv = KeyValue(key, value);
+        kvs.add(kv);
+    }
+
+    auto key1 = Key("my_key", 1);
+    auto value1 = Value("v1", 1);
+    auto kv1 = KeyValue(key1, value1);
+
+    kvs.del(key1);
+
+    EXPECT_EQ(std::nullopt,
+              kvs.get(key1));
 
     for (int i = 21; i < 40; i++) {
         auto key = Key("k" + std::to_string(i), 1);
