@@ -2,8 +2,6 @@
 
 #include <optional>
 #include "json.h"
-//#include "fileHandler.h"
-//#include "SStable.h"
 
 using json = nlohmann::json;
 
@@ -58,7 +56,7 @@ public:
 
     KeyOffset(Key key, size_t i, bool deleted = false);
 
-    bool deleted /*= false*/;
+    bool deleted;
 };
 
 void to_json(json &j, const KeyOffset &ko);
