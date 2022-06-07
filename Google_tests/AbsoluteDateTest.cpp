@@ -264,7 +264,7 @@ TEST_F(KVS_tester, testClearFile) {
         kvs.add(kv);
     }
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i <= 1000; i++) {
         auto key = Key("k" + std::to_string(i), 2);
         kvs.del(key);
     }
