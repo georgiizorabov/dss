@@ -20,3 +20,4 @@ set(SOURCE_FILES
         )
 
 add_library(KVS_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
+set_property(DIRECTORY . PROPERTY CXX_STANDARD 17)
