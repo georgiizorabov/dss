@@ -86,8 +86,8 @@ std::optional<long> SSTable::find(const Key &key) {
     return std::nullopt;
 }
 
-std::vector<KeyOffset> SSTable::getAll() {
-    return file.readFromFileAll().get<std::vector<KeyOffset>>();
+std::vector<KeyOffset> SSTable::getHundred() {
+    return file.readFromFileHundred().get<std::vector<KeyOffset>>();
 }
 
 void SSTable::clear() {

@@ -17,6 +17,7 @@ struct SSTableFileHandler{
 
     void clear_file();
 
+    json readFromFileHundred();
 };
 
 struct DataFileHandler{
