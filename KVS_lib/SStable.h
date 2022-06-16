@@ -24,5 +24,7 @@ struct SSTable {
     SparseSSTable sparseSSTable;
 
     void clear();
+
+    std::vector<KeyOffset> getHundred();
 };
 

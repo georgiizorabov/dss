@@ -7,7 +7,7 @@
 #include "FileHandler.h"
 //#include "SStable.h"
 
-class SparseSSTable {
+struct SparseSSTable {
     SSTableFileHandler file;
     std::vector<KeyOffset> sparse = {};
    //    поля:

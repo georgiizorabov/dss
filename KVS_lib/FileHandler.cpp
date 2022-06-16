@@ -52,6 +52,21 @@ json SSTableFileHandler::readFromFileAll() {
     return j;
 }
 
+json SSTableFileHandler::readFromFileHundred() {
+    static  std::ifstream ifs(fileName);
+    if (!ifs.is_open())
+        ifs.open(fileName);
+    std::string value;
+    json j;
+    int i = 0;
+    while (i++ < 100 && std::getline(ifs, value)) {
+        j.push_back(json::parse<>(value));
+    }
+    if (ifs.eof())
+        ifs.close();
+    return j;
+}
+
 
 void DataFileHandler::writeToFile(const json &j) {
     current_offset += to_string(j).size()

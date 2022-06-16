@@ -136,17 +136,21 @@ void KeyValueStore::rewriteDataFile() {
     ssTable.addLog(log.getLog());
     log.clear();
     DataFileHandler copy("outputDataCopy.json");
-    auto vec = ssTable.getAll();
-    ssTable.clear();
-    for (const auto &i: vec) {
-        KeyOffset keyOffset = KeyOffset(i.getKey(), copy.current_offset);
-        KeyValue keyValue = file.readFromFile(i.getOffset());
-        copy.writeToFile(keyValue);
-        while (!log.add(keyOffset)) {
-            ssTable.addLog(log.getLog());
-            log.clear();
+    std::vector<KeyOffset> vec;
+    auto ssTableNew = SSTable(SSTableFileHandler("outputSStableCopy.json"), SparseSSTable("outputSStableCopy.json"));
+    while (!(vec = ssTable.getHundred()).empty()) {
+        for (const auto &i: vec) {
+            KeyOffset keyOffset = KeyOffset(i.getKey(), copy.current_offset);
+            KeyValue keyValue = file.readFromFile(i.getOffset());
+            copy.writeToFile(keyValue);
+            while (!log.add(keyOffset)) {
+                ssTableNew.addLog(log.getLog());
+                log.clear();
+            }
         }
     }
+    std::remove(ssTable.file.fileName.c_str());
+    std::rename("outputSStableCopy.json", "outputSStable.json");
     std::remove(file.fileName.c_str());
     std::rename("outputDataCopy.json", "outputData.json");
     copy.fileName = "outputData.json";
