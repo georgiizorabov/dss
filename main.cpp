@@ -3,7 +3,18 @@
 //#include "json.h"
 #include "KVS_lib/KVS.h"
 #include <chrono>
+
 //using json = nlohmann::json;
+struct res {
+    long N, M, p, sz;
+    long avReq;
+    long avRead;
+    long avWrite;
+    long maxRead;
+    long maxWrite;
+    long minRead;
+    long minWrite;
+};
 
 int main(int argc, char **argv) {
     std::ofstream ofs1("outputData.json");
@@ -16,7 +27,8 @@ int main(int argc, char **argv) {
     std::vector<long> Ns = {10, 100, 1000, 5000, 10000};
     std::vector<long> Ps = {10, 25, 50, 75, 90};
     std::vector<long> Szs = {10, 100, 500, 1000, 2000};
-
+    std::vector<res> res1;
+    std::vector<res> res2;
     long N, M, p, sz;
     std::cout << "All adds then all gets: \n";
     for (long m: Ms) { // перебираем M
@@ -94,14 +106,21 @@ int main(int argc, char **argv) {
                         avReq = std::accumulate(avW.begin(), avW.end(), 0) / avW.size();
 
                         std::cout << "N = " << N << "; M = " << M << "; p = " << p << "; sz = " << sz << '\n' <<
-                                  "среднее время звпроса: " << avReq << '\n' <<
-                                  "среднее время звпроса на чтение: " << avRead << '\n' <<
-                                  "среднее время звпроса на запись: " << avWrite << '\n' <<
-                                  "максимальное время звпроса на чтение: " << maxRead << '\n' <<
-                                  "максимальное время звпроса на запись: " << maxWrite << '\n' <<
-                                  "минимальное время звпроса на чтение: " << minRead << '\n' <<
-                                  "минимальное время звпроса на запись: " << minWrite <<
+                                  "average time of request: " << avReq << '\n' <<
+                                  "average time of request get: " << avRead << '\n' <<
+                                  "average time of request add: " << avWrite << '\n' <<
+                                  "max time of request get: " << maxRead << '\n' <<
+                                  "max time of request add: " << maxWrite << '\n' <<
+                                  "min time of request get: " << minRead << '\n' <<
+                                  "min time of request add: " << minWrite <<
                                   "\n-----------------------------------------------------\n";
+                        res1.push_back({N, M, p, sz, avReq,
+                                        avRead,
+                                        avWrite,
+                                        maxRead,
+                                        maxWrite,
+                                        minRead,
+                                        minWrite,});
                     }
                 }
             }
@@ -162,7 +181,9 @@ int main(int argc, char **argv) {
                                     maxWrite = t;
                                 }
                             }
-
+                            if (!avW.size()) {
+                                continue;
+                            }
                             avWrite = std::accumulate(avW.begin(), avW.end(), 0) / avW.size();
 
                             for (int i = 0; i < (M - M * p / 100) / 2; i++) { // читаем
@@ -185,19 +206,30 @@ int main(int argc, char **argv) {
                             }
                         }
 
+                        if (!avR.size()) {
+                            continue;
+                        }
+
                         avRead = std::accumulate(avR.begin(), avR.end(), 0) / avR.size();
                         avW.insert(avW.end(), avR.begin(), avR.end());
                         avReq = std::accumulate(avW.begin(), avW.end(), 0) / avW.size();
 
                         std::cout << "N = " << N << "; M = " << M << "; p = " << p << "; sz = " << sz << '\n' <<
-                                  "среднее время звпроса: " << avReq << '\n' <<
-                                  "среднее время звпроса на чтение: " << avRead << '\n' <<
-                                  "среднее время звпроса на запись: " << avWrite << '\n' <<
-                                  "максимальное время звпроса на чтение: " << maxRead << '\n' <<
-                                  "максимальное время звпроса на запись: " << maxWrite << '\n' <<
-                                  "минимальное время звпроса на чтение: " << minRead << '\n' <<
-                                  "минимальное время звпроса на запись: " << minWrite <<
+                                  "average time of request: " << avReq << '\n' <<
+                                  "average time of request get: " << avRead << '\n' <<
+                                  "average time of request add: " << avWrite << '\n' <<
+                                  "max time of request get: " << maxRead << '\n' <<
+                                  "max time of request add: " << maxWrite << '\n' <<
+                                  "min time of request get: " << minRead << '\n' <<
+                                  "min time of request add: " << minWrite <<
                                   "\n-----------------------------------------------------\n";
+                        res2.push_back({N, M, p, sz, avReq,
+                                        avRead,
+                                        avWrite,
+                                        maxRead,
+                                        maxWrite,
+                                        minRead,
+                                        minWrite});
                     }
                 }
             }
@@ -206,7 +238,19 @@ int main(int argc, char **argv) {
 //                      << "N = " << N << "; M = " << M << "; p = " << p << "; sz = " << sz << '\n';
         }
     }
-
-
+    std::cout
+            << "N, M, p, sz, avReq, avRead, avWrite, maxRead, maxWrite, minRead, minWrite'\n";
+    for (auto el: res1) {
+        std::cout << el.N << ",\t" << el.M << ",\t" << el.p << ",\t" << el.sz << ",\t" << el.avReq << ",\t" << el.avRead
+                  << ",\t" << el.avWrite << ",\t" << el.maxRead << ",\t" << el.maxWrite
+                  << el.minRead << ",\t" << el.minWrite << '\n';
+    }
+    std::cout
+            << "\n=================================================================================================\n";
+    for (auto el: res2) {
+        std::cout << el.N << ",\t" << el.M << ",\t" << el.p << ",\t" << el.sz << ",\t" << el.avReq << ",\t" << el.avRead
+                  << ",\t" << el.avWrite << ",\t" << el.maxRead << ",\t" << el.maxWrite
+                  << el.minRead << ",\t" << el.minWrite << '\n';
+    }
     return 0;
 }
